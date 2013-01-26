@@ -1,7 +1,13 @@
-@(message: String)
 
-@main(message) {
-    
-    <div>@message</div>
-    
+@main("Student Manager Beta") {	
+	<div class="row">
+	<div class="span10 offset2"><img class="img-rounded" src="@routes.Assets.at("images/homeImage.png")" alt=""></div>
+	</div>
+	<div class="row">
+		<div class="span12" style="color:white">
+			<p class="lead">The student manager beta is the best way to manage all your student and all mark for-each test.
+			Download now your Android application <img style="width:100px" src="@routes.Assets.at("images/store.png")" /> and sign up to start working.
+			With our application, manage student has never been easier.</p>
+		</div>
+	</div>
 }
