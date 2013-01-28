@@ -17,9 +17,6 @@ public class PromotionModel extends Model {
 	private int annee;
 	private String label;
 	
-	@Reference
-	private TeacherModel teacher;
-	
 	public ObjectId id()	{
 		return id;
 	}
@@ -38,14 +35,6 @@ public class PromotionModel extends Model {
 
 	public void setLabel(String label) {
 		this.label = label;
-	}
-
-	public TeacherModel getTeacher() {
-		return teacher;
-	}
-
-	public void setTeacher(TeacherModel teacher) {
-		this.teacher = teacher;
 	}
 	
 }

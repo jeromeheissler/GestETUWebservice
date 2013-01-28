@@ -3,25 +3,35 @@
 # ~~~~
 
 # Home page
-GET     /                           controllers.Application.index()
+GET     /                           	controllers.Application.index(formError:Boolean ?= false)
+
+POST 	/signin							controllers.Application.signin()
+GET		/signup							controllers.Application.signup()
+POST	/signup							controllers.Application.signupForm()
+GET		/dashboard						controllers.Application.dashboard()
+
+GET		/logout							controllers.Application.logout()
+
 
 # Map static resources from the /public folder to the /assets URL path
-GET     /assets/*file               controllers.Assets.at(path="/public", file)
+GET     /assets/*file               	controllers.Assets.at(path="/public", file)
 
-POST	/api/login						controllers.Application.login()
-		
-PUT 	/api/student	  				controllers.Application.addStudent()
-DELETE 	/api/student/:id 				controllers.Application.delStudent(id: Int)
-GET		/api/student/:id				controllers.Application.getStudent(id: Int)
-POST	/api/student/:id				controllers.Application.editStudent(id: Int)
-		
-PUT 	/api/promotion	  				controllers.Application.addPromotion()
-DELETE 	/api/promotion/:id 				controllers.Application.delPromotion(id: Int)
-GET		/api/promotion/:id				controllers.Application.getPromotion(id: Int)
-POST	/api/promotion/:id				controllers.Application.editPromotion(id: Int)
 
-PUT 	/api/mark/	  					controllers.Application.addMark()
-DELETE 	/api/mark/:id 					controllers.Application.delMark(id: Int)
-GET		/api/mark/:id					controllers.Application.getMark(id: Int)
-POST	/api/mark/:id					controllers.Application.editMark(id: Int)
+
+POST	/api/login						controllers.Api.login()
+		
+PUT 	/api/student	  				controllers.Api.addStudent()
+DELETE 	/api/student/:id 				controllers.Api.delStudent(id: Int)
+GET		/api/student/:id				controllers.Api.getStudent(id: Int)
+POST	/api/student/:id				controllers.Api.editStudent(id: Int)
+		
+PUT 	/api/promotion	  				controllers.Api.addPromotion()
+DELETE 	/api/promotion/:id 				controllers.Api.delPromotion(id: Int)
+GET		/api/promotion/:id				controllers.Api.getPromotion(id: Int)
+POST	/api/promotion/:id				controllers.Api.editPromotion(id: Int)
+
+PUT 	/api/mark/	  					controllers.Api.addMark()
+DELETE 	/api/mark/:id 					controllers.Api.delMark(id: Int)
+GET		/api/mark/:id					controllers.Api.getMark(id: Int)
+POST	/api/mark/:id					controllers.Api.editMark(id: Int)
 		

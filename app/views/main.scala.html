@@ -1,4 +1,4 @@
-@(title: String)(content: Html)
+@(title: String)(content: Html)(connected: Boolean)
 
 <!DOCTYPE html>
 
@@ -31,17 +31,25 @@
 		      <!-- Everything you want hidden at 940px or less, place within here -->
 		      <div class="nav-collapse collapse">
 		        <ul class="nav pull-right">
+		          @if(connected == false)	{
 		          <li><a><form class="form-inline" method="POST" action="/signin" style="margin:0">
-					  <input type="text" class="input-large" placeholder="Email">
+					  <input type="text" name="Email" class="input-large" placeholder="Email">
 					  <div class="input-append">
-						  <input class="span2" id="appendedInputButton" type="password" placeholder="Password">
-						  <button class="btn" type="button">Sign in</button>
+						  <input class="span2" name="Password" id="appendedInputButton" type="password" placeholder="Password">
+						  <button class="btn" type="submit" >Sign in</button>
 						</div>
 					</form></a>
 					</li>
 	           	  <li><a href="/signup">
 	           	  	<button style="margin-top:0" class="btn btn-medium btn-info" type="button">Sign up</button>
-	           	  </a></li>           
+	           	  </a></li>   
+	           	  }else	{
+	           	  	<li>
+	           	  		<a href="/logout">
+	           	  			<button style="margin-top:0" class="btn btn-medium btn-info" type="button">Disconect</button>
+	           	  		</a>
+	           	  	</li>
+	           	  }        
 	            </ul>
 		      </div>
 		    </div>
