@@ -2,6 +2,13 @@ package controllers;
 
 import java.security.NoSuchAlgorithmException;
 
+import org.bson.types.ObjectId;
+import org.codehaus.jackson.JsonNode;
+import org.codehaus.jackson.node.ArrayNode;
+import org.codehaus.jackson.node.JsonNodeFactory;
+import org.codehaus.jackson.node.ObjectNode;
+
+import models.PromotionModel;
 import models.TeacherModel;
 
 import play.*;
@@ -17,7 +24,7 @@ public class Application extends Controller {
 		if(session().containsKey("idTeacher"))
 			return redirect(routes.Application.dashboard());
 		
-		return ok(index.render());
+		return ok(index.render(formError));
 	}
 	
 	public static Result logout()	{
@@ -79,10 +86,50 @@ public class Application extends Controller {
 		if(!session().containsKey("idTeacher"))
 			return redirect(routes.Application.index(false));
 		
-		TeacherModel teacher = TeacherModel.finder.byId(session().get("idTeacher"));
-		
-		
-		
 		return ok(dashboard.render());
+	}
+	
+	public static Result promotion()	{
+		PromotionModel[] all = PromotionModel.finder.all().toArray(new PromotionModel[0]);
+		JsonNodeFactory factory = JsonNodeFactory.instance;
+		ArrayNode ret = new ArrayNode(factory);
+		for(PromotionModel promo : all)	{
+			ObjectNode node = new ObjectNode(factory);
+			node.put("id", promo.id().toString());
+			node.put("annee", promo.getAnnee());
+			node.put("name", promo.getLabel());
+			ret.add(node);
+		}
+		return ok(ret);
+	}
+	
+	public static Result addPromotion()	{
+		DynamicForm signupForm = form().bindFromRequest();
+		String inputName = signupForm.field("name").value();
+		String inputAnnee = signupForm.field("annee").value();
+		PromotionModel promo = new PromotionModel();
+		promo.setAnnee(Integer.parseInt(inputAnnee));
+		promo.setLabel(inputName);
+		promo.insert();
+		JsonNodeFactory factory = JsonNodeFactory.instance;
+		ObjectNode node = new ObjectNode(factory);
+		node.put("state", "success");
+		node.put("id", promo.id().toString());
+		return ok(node);
+	}
+	
+	public static Result delPromotion()	{
+		DynamicForm signupForm = form().bindFromRequest();
+		String inputid = signupForm.field("id").value();
+		PromotionModel promo = PromotionModel.finder.byId(new ObjectId(inputid));
+		JsonNodeFactory factory = JsonNodeFactory.instance;
+		ObjectNode node = new ObjectNode(factory);
+		if(promo != null)	{
+			promo.delete();
+			node.put("state", "success");
+		}else	{
+			node.put("state", "fail");
+		}
+		return ok(node);
 	}
 }

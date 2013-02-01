@@ -17,6 +17,9 @@ public class TestModel extends Model {
 	@Reference
 	private StudentModel student;
 	
+	@Reference
+	private TeacherModel teacher;
+	
 	public ObjectId id()	{
 		return id;
 	}
@@ -43,6 +46,14 @@ public class TestModel extends Model {
 
 	public void setStudent(StudentModel student) {
 		this.student = student;
+	}
+
+	public TeacherModel getTeacher() {
+		return teacher;
+	}
+
+	public void setTeacher(TeacherModel teacher) {
+		this.teacher = teacher;
 	}
 	
 }

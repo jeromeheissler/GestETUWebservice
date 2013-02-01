@@ -1,6 +1,12 @@
-
+@(formError : Boolean)
 @main("Student Manager Beta") {	
 	<div class="row">
+	@if(formError)	{
+	<div class="alert alert-error">
+	  <button type="button" class="close" data-dismiss="alert">&times;</button>
+	  <strong>Error!</strong> Something is wrong when we tried to validate the form.
+	</div>
+	}
 	<div class="span10 offset2"><img class="img-rounded" src="@routes.Assets.at("images/homeImage.png")" alt=""></div>
 	</div>
 	<div class="row">
