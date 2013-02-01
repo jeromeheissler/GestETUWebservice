@@ -132,4 +132,23 @@ public class Application extends Controller {
 		}
 		return ok(node);
 	}
+	
+	public static Result editPromotion()	{
+		DynamicForm signupForm = form().bindFromRequest();
+		String inputid = signupForm.field("id").value();
+		String inputname = signupForm.field("name").value();
+		String inputannee = signupForm.field("annee").value();
+		PromotionModel promo = PromotionModel.finder.byId(new ObjectId(inputid));
+		JsonNodeFactory factory = JsonNodeFactory.instance;
+		ObjectNode node = new ObjectNode(factory);
+		if(promo != null)	{
+			promo.setAnnee(Integer.parseInt(inputannee));
+			promo.setLabel(inputname);
+			promo.update();
+			node.put("state", "success");
+		}else	{
+			node.put("state", "fail");
+		}
+		return ok(node);
+	}
 }

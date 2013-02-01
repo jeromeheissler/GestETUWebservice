@@ -15,6 +15,7 @@ GET		/logout							controllers.Application.logout()
 
 POST	/addPromotion					controllers.Application.addPromotion()
 POST	/delPromotion					controllers.Application.delPromotion()
+POST	/editPromotion					controllers.Application.editPromotion()
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               	controllers.Assets.at(path="/public", file)
