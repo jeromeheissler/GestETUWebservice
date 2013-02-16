@@ -11,7 +11,11 @@ POST	/signup							controllers.Application.signupForm()
 
 GET		/logout							controllers.Application.logout()
 
-GET		/dashboard						controllers.Application.dashboard()
+GET		/dashboard						controllers.Application.dashboard(path="")
+POST	/dashboard/student/add			controllers.Student.studentAddForm()
+
+GET		/dashboard*devnull   			controllers.Application.dashboard(devnull)
+POST	/dashboard*devnull   			controllers.Application.dashboard(devnull)
 
 GET		/promotion						controllers.Promotion.promotion()
 POST	/addPromotion					controllers.Promotion.addPromotion()
@@ -20,7 +24,9 @@ POST	/editPromotion					controllers.Promotion.editPromotion()
 
 GET		/student						controllers.Student.student()
 GET		/studentAdd						controllers.Student.studentAdd()
-POST	/studentAdd						controllers.Student.studentAddForm()
+POST	/delStudent						controllers.Student.delStudent()
+POST	/editStudent					controllers.Student.editStudent()
+GET		/loadOneStudent/:id				controllers.Student.loadOneStudent(id: String)
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               	controllers.Assets.at(path="/public", file)
@@ -32,6 +38,7 @@ POST	/api/login						controllers.Api.login()
 PUT 	/api/student	  				controllers.Api.addStudent()
 DELETE 	/api/student/:id 				controllers.Api.delStudent(id: String)
 GET		/api/student/:id				controllers.Api.getStudent(id: String)
+GET		/api/student					controllers.Api.getStudent(id: String = "")
 POST	/api/student/:id				controllers.Api.editStudent(id: String)
 		
 GET		/api/promotion					controllers.Api.getPromotion(id : String = "")

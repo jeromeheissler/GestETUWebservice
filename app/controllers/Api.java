@@ -1,6 +1,7 @@
 package controllers;
 
 import models.PromotionModel;
+import models.StudentModel;
 
 import org.bson.types.ObjectId;
 import org.codehaus.jackson.node.ArrayNode;
@@ -27,7 +28,32 @@ public class Api extends Controller {
 	}
 
 	public static Result getStudent(String id) {
-		return ok();
+		if(id.compareTo("") == 0)	{
+			StudentModel[] all = StudentModel.finder.all().toArray(new StudentModel[0]);
+			JsonNodeFactory factory = JsonNodeFactory.instance;
+			ArrayNode ret = new ArrayNode(factory);
+			for(StudentModel student : all)	{
+				ObjectNode node = new ObjectNode(factory);
+				node.put("id", student.id().toString());
+				node.put("firstname", student.getFirstname());
+				node.put("lastname", student.getLastname());
+				node.put("numstu", student.getNumStu());
+				node.put("mail", student.getEmail());
+				ret.add(node);
+			}
+			return ok(ret);
+		}else	{
+			StudentModel student = StudentModel.finder.byId(new ObjectId(id));
+			JsonNodeFactory factory = JsonNodeFactory.instance;
+			ObjectNode node = new ObjectNode(factory);
+			
+			node.put("id", student.id().toString());
+			node.put("firstname", student.getFirstname());
+			node.put("lastname", student.getLastname());
+			node.put("numstu", student.getNumStu());
+			node.put("mail", student.getEmail());
+			return ok(node);
+		}
 	}
 
 	public static Result editStudent(String id) {

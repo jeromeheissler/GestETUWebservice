@@ -23,7 +23,7 @@ public class Application extends Controller {
 
 	public static Result index(boolean formError) {
 		if(session().containsKey("idTeacher"))
-			return redirect(routes.Application.dashboard());
+			return redirect(routes.Application.dashboard(""));
 		
 		return ok(index.render(formError));
 	}
@@ -45,7 +45,7 @@ public class Application extends Controller {
 				return redirect(routes.Application.index(true));
 			else	{
 				session().put("idTeacher", teacher.id().toString());
-				return redirect(routes.Application.dashboard());
+				return redirect(routes.Application.dashboard(""));
 			}
 		} catch (NoSuchAlgorithmException e1) {
 			return redirect(routes.Application.index(true));
@@ -73,17 +73,17 @@ public class Application extends Controller {
 			return redirect(routes.Application.index(true));
 		}
 		
-		return redirect(routes.Application.dashboard());
+		return redirect(routes.Application.dashboard(""));
 	}
 	
 	public static Result signup()	{
 		if(session().containsKey("idTeacher"))
-			return redirect(routes.Application.dashboard());
+			return redirect(routes.Application.dashboard(""));
 		
 		return ok(signup.render());
 	}
 	
-	public static Result dashboard()	{
+	public static Result dashboard(String devnull)	{
 		if(!session().containsKey("idTeacher"))
 			return redirect(routes.Application.index(false));
 		

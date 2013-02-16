@@ -1,5 +1,16 @@
-
-<form class="form-horizontal" action="/studentAdd" method="post">
+@(lst : Array[PromotionModel])
+@if(session().containsKey("statusadd")) {
+	@if(session().get("statusadd") == "true")	{
+	<div class="alert alert-success">
+		The student has been created
+	</div>
+	}else	{
+	<div class="alert alert-error">
+		something went wrong, when we want to insert the student
+	</div>
+	}
+}
+<form class="form-horizontal" action="/dashboard/student/add" method="post">
   <div class="control-group">
     <label class="control-label" for="inputEmail">Firstname</label>
     <div class="controls">
@@ -22,6 +33,16 @@
     <label class="control-label" for="inputstudentmail">Student mail</label>
     <div class="controls">
       <input type="text" name="mail"  id="inputstudentmail" placeholder="">
+    </div>
+  </div>
+  <div class="control-group">
+    <label class="control-label" for="inputpromotion">Promotion</label>
+    <div class="controls">
+      <select name="promotion" id="inputpromotion">
+      @for(i<- 0 to lst.length-1)	{
+      	<option value="@lst(i).id().toString()">@lst(i).getLabel() - @lst(i).getAnnee()</option>
+      }
+      </select>
     </div>
   </div>
   <div class="control-group">
