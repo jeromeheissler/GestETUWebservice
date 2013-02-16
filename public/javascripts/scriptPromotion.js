@@ -1,5 +1,7 @@
 
 function loadPromotion()	{
+	$("#menu li").removeClass("active");
+	$("#promo").addClass("active");
 	$.getJSON("/promotion", function(data)	{
 		$("#content").html("");
 		var items = [];

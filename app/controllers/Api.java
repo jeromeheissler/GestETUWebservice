@@ -39,7 +39,17 @@ public class Api extends Controller {
 	}
 
 	public static Result delPromotion(String id) {
-		return ok();
+		PromotionModel promo = PromotionModel.finder.byId(new ObjectId(id));
+		JsonNodeFactory factory = JsonNodeFactory.instance;
+		ObjectNode node = new ObjectNode(factory);
+		if(promo != null)	{
+			promo.delete();
+			node.put("status", "success");
+		}else	{
+			node.put("state", "failure");
+			node.put("msg", "Promotion does not exist");
+		}
+		return ok(node);
 	}
 
 	public static Result getPromotion(String id) {

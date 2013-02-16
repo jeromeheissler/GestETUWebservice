@@ -36,6 +36,11 @@ public class StudentModel extends Model {
 		lstTest = new ArrayList<TestModel>();
 	}
 	
+	
+	public ObjectId id()	{
+		return id;
+	}
+	
 	public String getFirstname() {
 		return firstname;
 	}
