@@ -13,14 +13,14 @@ GET		/logout							controllers.Application.logout()
 
 GET		/dashboard						controllers.Application.dashboard()
 
-GET		/promotion						controllers.Application.promotion()
-POST	/addPromotion					controllers.Application.addPromotion()
-POST	/delPromotion					controllers.Application.delPromotion()
-POST	/editPromotion					controllers.Application.editPromotion()
+GET		/promotion						controllers.Promotion.promotion()
+POST	/addPromotion					controllers.Promotion.addPromotion()
+POST	/delPromotion					controllers.Promotion.delPromotion()
+POST	/editPromotion					controllers.Promotion.editPromotion()
 
-GET		/student						controllers.Application.student()
-GET		/studentAdd						controllers.Application.studentAdd()
-POST	/studentAdd						controllers.Application.studentAddForm()
+GET		/student						controllers.Student.student()
+GET		/studentAdd						controllers.Student.studentAdd()
+POST	/studentAdd						controllers.Student.studentAddForm()
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               	controllers.Assets.at(path="/public", file)
@@ -34,11 +34,8 @@ DELETE 	/api/student/:id 				controllers.Api.delStudent(id: String)
 GET		/api/student/:id				controllers.Api.getStudent(id: String)
 POST	/api/student/:id				controllers.Api.editStudent(id: String)
 		
-PUT 	/api/promotion	  				controllers.Api.addPromotion()
-DELETE 	/api/promotion/:id 				controllers.Api.delPromotion(id: String)
 GET		/api/promotion					controllers.Api.getPromotion(id : String = "")
 GET		/api/promotion/:id				controllers.Api.getPromotion(id: String)
-POST	/api/promotion/:id				controllers.Api.editPromotion(id: String)
 
 PUT 	/api/mark/	  					controllers.Api.addMark()
 DELETE 	/api/mark/:id 					controllers.Api.delMark(id: String)
