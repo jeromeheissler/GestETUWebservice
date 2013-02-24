@@ -21,6 +21,13 @@ $(document).ready(function(){
 				}else	{
 					allStudent();
 				}
+			}else if(event.pathNames[0] == "mark"){
+				loadMark();
+				if(event.pathNames[1] == "addone")	{
+					addMark();
+				}else if(event.pathNames[1] == "import")	{
+					importMark();
+				}
 			}else if(event.pathNames[0] == "logout"){
 				window.location = "/logout";
 			}
