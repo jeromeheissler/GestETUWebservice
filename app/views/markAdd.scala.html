@@ -1,0 +1,39 @@
+@if(session().containsKey("markadd")) {
+	@if(session().get("markadd") == "true")	{
+	<div class="alert alert-success">
+		The mark has been created
+	</div>
+	}else	{
+	<div class="alert alert-error">
+		something went wrong, when we want to insert the mark
+	</div>
+	}
+	@session().remove("markadd")
+}
+<form class="form-horizontal" action="/dashboard/mark/addone" method="post">
+  <div class="control-group">
+    <label class="control-label" for="inputStudentTypeHead">Student</label>
+    <div class="controls">
+      <input type="text" autocomplete="off" id="inputStudentTypeHead" data-provide="typeahead" placeholder="" />
+      <input type="hidden" name="student" id="numStu" value="null" />
+    </div>
+  </div>
+  <div class="control-group">
+    <label class="control-label" for="inputSubject">Subject</label>
+    <div class="controls">
+      <input type="text" autocomplete="off" id="inputSubject" name="subject" data-provide="typeahead" placeholder="">
+      <input type="hidden" name="subjectID" id="numSubject" value="null" />
+    </div>
+  </div>
+  <div class="control-group">
+    <label class="control-label" for="inputMark">Mark</label>
+    <div class="controls">
+      <input type="text" id="inputMark" name="mark" data-provide="typeahead" placeholder="">
+    </div>
+  </div>
+  <div class="control-group">
+    <div class="controls">
+      <button type="submit" id="valid" disabled="disabled" class="btn">Save</button>
+    </div>
+  </div>
+</form>

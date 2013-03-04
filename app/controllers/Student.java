@@ -1,6 +1,7 @@
 package controllers;
 
-import java.util.Map.Entry;
+
+import java.util.List;
 
 import models.PromotionModel;
 import models.StudentModel;
@@ -13,13 +14,12 @@ import org.codehaus.jackson.node.ObjectNode;
 import play.data.DynamicForm;
 import play.mvc.Controller;
 import play.mvc.Result;
-import views.html.dashboard;
-import views.html.studentAdd;
+import views.html.*;
 
 public class Student extends Controller {
 	
 	public static Result student()	{
-		StudentModel[] all = StudentModel.finder.all().toArray(new StudentModel[0]);
+		List<StudentModel> all = StudentModel.finder.all();
 		JsonNodeFactory factory = JsonNodeFactory.instance;
 		ArrayNode ret = new ArrayNode(factory);
 		for(StudentModel student : all)	{
@@ -38,15 +38,13 @@ public class Student extends Controller {
 	
 	public static Result loadOneStudent(String id)	{
 		StudentModel student = StudentModel.finder.byId(new ObjectId(id));
-		JsonNodeFactory factory = JsonNodeFactory.instance;
-		ObjectNode node = new ObjectNode(factory);
 		int status;
 		if( student != null) {
 			status = 200;
 		}else	{
 			status = 404;
 		}
-		return ok(views.html.studentDescription.render(status, student));
+		return ok(studentDescription.render(status, student));
 	}
 	
 	public static Result studentAdd()	{

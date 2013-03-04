@@ -27,6 +27,8 @@ $(document).ready(function(){
 					addMark();
 				}else if(event.pathNames[1] == "import")	{
 					importMark();
+				}else	{
+					addMark();
 				}
 			}else if(event.pathNames[0] == "logout"){
 				window.location = "/logout";

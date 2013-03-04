@@ -3,7 +3,6 @@ package models;
 import org.bson.types.ObjectId;
 
 import com.google.code.morphia.annotations.Id;
-import com.google.code.morphia.annotations.Reference;
 
 import leodagdag.play2morphia.Model;
 

@@ -25,9 +25,9 @@ public class StudentModel extends Model {
 	private String email;
 	private String password;
 	
-	@Reference
+	@Reference(lazy=true)
 	private PromotionModel promotion;
-	@Reference
+	@Reference(lazy=true)
 	private List<TestModel> lstTest;
 	
 	public static Finder<ObjectId, StudentModel> finder = new Finder<ObjectId, StudentModel>(ObjectId.class, StudentModel.class);

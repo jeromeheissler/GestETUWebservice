@@ -2,17 +2,8 @@ package controllers;
 
 import java.security.NoSuchAlgorithmException;
 
-import org.bson.types.ObjectId;
-import org.codehaus.jackson.JsonNode;
-import org.codehaus.jackson.node.ArrayNode;
-import org.codehaus.jackson.node.JsonNodeFactory;
-import org.codehaus.jackson.node.ObjectNode;
-
-import models.PromotionModel;
-import models.StudentModel;
 import models.TeacherModel;
 
-import play.*;
 import play.data.DynamicForm;
 import play.mvc.*;
 

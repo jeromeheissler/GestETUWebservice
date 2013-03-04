@@ -11,13 +11,11 @@ public class TestModel extends Model {
 
 	@Id
 	private ObjectId id;
-	@Reference
+	@Reference(lazy=true)
 	private SubjectModel subject;
 	private float note;
-	@Reference
-	private StudentModel student;
 	
-	@Reference
+	@Reference(lazy=true)
 	private TeacherModel teacher;
 	
 	public ObjectId id()	{
@@ -38,14 +36,6 @@ public class TestModel extends Model {
 
 	public void setNote(float note) {
 		this.note = note;
-	}
-
-	public StudentModel getStudent() {
-		return student;
-	}
-
-	public void setStudent(StudentModel student) {
-		this.student = student;
 	}
 
 	public TeacherModel getTeacher() {
