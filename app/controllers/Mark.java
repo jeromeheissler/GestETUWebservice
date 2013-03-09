@@ -41,7 +41,6 @@ public class Mark extends Controller {
 				));
 		StudentModel stu = StudentModel.finder.byId(new ObjectId(stuid));
 		if(stu != null)	{
-			test.setStudent(stu);
 			SubjectModel sub = null;
 			if(subjectID.compareTo("null") != 0)	{
 				ObjectId id = new ObjectId(subjectID);
@@ -59,8 +58,8 @@ public class Mark extends Controller {
 			test.insert();
 			session().put("markadd", "true");
 			
-			//stu.addTest(test);
-			//stu.update();
+			stu.addTest(test);
+			stu.update();
 		} else	{
 			session().put("markadd", "false");
 		}

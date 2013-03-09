@@ -1,5 +1,7 @@
 package models;
 
+import java.io.IOException;
+
 import org.bson.types.ObjectId;
 
 import com.google.code.morphia.annotations.Id;
@@ -9,6 +11,8 @@ import leodagdag.play2morphia.Model;
 
 public class TestModel extends Model {
 
+	public static Finder<ObjectId, TestModel> finder = new Finder<ObjectId, TestModel>(ObjectId.class, TestModel.class);
+	
 	@Id
 	private ObjectId id;
 	@Reference(lazy=true)
