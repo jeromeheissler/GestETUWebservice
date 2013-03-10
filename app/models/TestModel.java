@@ -3,6 +3,7 @@ package models;
 import java.io.IOException;
 
 import org.bson.types.ObjectId;
+import org.codehaus.jackson.annotate.JsonProperty;
 
 import com.google.code.morphia.annotations.Id;
 import com.google.code.morphia.annotations.Reference;
@@ -22,8 +23,9 @@ public class TestModel extends Model {
 	@Reference(lazy=true)
 	private TeacherModel teacher;
 	
-	public ObjectId id()	{
-		return id;
+	@JsonProperty
+	public String id()	{
+		return id.toString();
 	}
 
 	public SubjectModel getSubject() {

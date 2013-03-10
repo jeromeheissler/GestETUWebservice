@@ -1,6 +1,7 @@
 package models;
 
 import org.bson.types.ObjectId;
+import org.codehaus.jackson.annotate.JsonProperty;
 
 import com.google.code.morphia.annotations.Id;
 
@@ -14,8 +15,9 @@ public class SubjectModel extends Model {
 	
 	public static Finder<ObjectId, SubjectModel> finder = new Finder<ObjectId, SubjectModel>(ObjectId.class, SubjectModel.class);
 
-	public ObjectId id()	{
-		return id;
+	@JsonProperty
+	public String id()	{
+		return id.toString();
 	}
 	
 	public String getName() {

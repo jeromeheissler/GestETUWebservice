@@ -2,6 +2,8 @@ package models;
 
 
 import org.bson.types.ObjectId;
+import org.codehaus.jackson.annotate.JsonIgnore;
+import org.codehaus.jackson.annotate.JsonProperty;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,6 +25,7 @@ public class StudentModel extends Model {
 	private String numStu;
 	
 	private String email;
+	@JsonIgnore
 	private String password;
 	
 	@Reference(lazy=true)
@@ -36,9 +39,9 @@ public class StudentModel extends Model {
 		lstTest = new ArrayList<TestModel>();
 	}
 	
-	
-	public ObjectId id()	{
-		return id;
+	@JsonProperty
+	public String id()	{
+		return id.toString();
 	}
 	
 	public String getFirstname() {

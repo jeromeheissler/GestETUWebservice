@@ -1,10 +1,11 @@
 package models;
 
 import org.bson.types.ObjectId;
+import org.codehaus.jackson.annotate.JsonIgnore;
+import org.codehaus.jackson.annotate.JsonProperty;
 
 import com.google.code.morphia.annotations.Id;
 import com.google.code.morphia.query.Query;
-import org.codehaus.jackson.annotate.JsonProperty;
 
 import leodagdag.play2morphia.Model;
 
@@ -14,6 +15,7 @@ public class TeacherModel extends Model {
 	private ObjectId id;
 	
 	private String mail;
+	@JsonIgnore
 	private String pass;
 	private String firstname;
 	private String lastname;
@@ -29,8 +31,9 @@ public class TeacherModel extends Model {
 		
 	}
 	
-	public ObjectId id()	{
-		return id;
+	@JsonProperty
+	public String id()	{
+		return id.toString();
 	}
 	
 	public String getMail() {

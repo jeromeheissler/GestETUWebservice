@@ -1,6 +1,7 @@
 package models;
 
 import org.bson.types.ObjectId;
+import org.codehaus.jackson.annotate.JsonProperty;
 
 import com.google.code.morphia.annotations.Id;
 
@@ -16,8 +17,9 @@ public class PromotionModel extends Model {
 	private int annee;
 	private String label;
 	
-	public ObjectId id()	{
-		return id;
+	@JsonProperty
+	public String id()	{
+		return id.toString();
 	}
 
 	public int getAnnee() {

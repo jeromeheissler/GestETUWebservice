@@ -8,6 +8,7 @@ import models.TestModel;
 
 import org.bson.types.ObjectId;
 import org.codehaus.jackson.JsonGenerationException;
+import org.codehaus.jackson.JsonParseException;
 import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.node.ArrayNode;
@@ -48,7 +49,6 @@ public class Api extends Controller {
 			return ok(ret);
 		}else	{
 			StudentModel student = StudentModel.finder.byId(new ObjectId(id));
-			ObjectMapper mapper = new ObjectMapper();
 			String json = mapper.writeValueAsString(student);
 			return ok(json);
 		}
@@ -92,13 +92,17 @@ public class Api extends Controller {
 	public static Result getMark(String id) throws JsonGenerationException, JsonMappingException, IOException {
 		TestModel test = TestModel.finder.byId(new ObjectId(id));
 		
-		ObjectMapper mapper = new ObjectMapper();
 		String json = mapper.writeValueAsString(test);
 		return ok(json);
 
 	}
 
-	public static Result editMark(String id) {
+	public static Result editMark(String id) throws JsonParseException, JsonMappingException, IOException {
+		TestModel test = TestModel.finder.byId(new ObjectId(id));
+		
+		TestModel newObject = mapper.readValue("", TestModel.class);
+		
+		
 		return ok();
 	}
 
