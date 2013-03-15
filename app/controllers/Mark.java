@@ -1,7 +1,16 @@
 package controllers;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.List;
+
 import play.data.DynamicForm;
 import play.mvc.*;
+import play.mvc.Http.MultipartFormData;
+import play.mvc.Http.MultipartFormData.FilePart;
 
 import org.bson.types.ObjectId;
 import org.codehaus.jackson.node.ArrayNode;
@@ -135,6 +144,42 @@ public class Mark extends Controller {
 			node.put("state", "fail");
 		}
 		return ok(node);
+	}
+	
+	public static Result importCSV()	{
+		return ok(importCSV.render());
+	}
+	
+	public static Result uploadCSV()	{
+		MultipartFormData uploadForm = request().body().asMultipartFormData();
+		List<FilePart> files = uploadForm.getFiles();
+		ArrayNode ret = new ArrayNode(factory);
+		for(FilePart file : files)	{
+			File thefile = file.getFile();
+			try {
+				BufferedReader br = new BufferedReader(new FileReader(thefile));
+				//lire la premiere ligne
+			    String tmp = br.readLine();
+			    //lire toute les ligne pour enregistrer les nom des substances 
+			    while ( (tmp=br.readLine())!=null ) {
+			    	String[] splitted = tmp.split(";");
+						
+				}
+			    br.close();
+			} catch (FileNotFoundException e) {
+				e.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		    
+			
+			ObjectNode node = new ObjectNode(factory);
+			node.put("name", file.getFilename());
+			ret.add(node);
+		}	
+		ObjectNode jsonfiles = new ObjectNode(factory);
+		jsonfiles.put("files", ret);
+		return ok(jsonfiles);
 	}
 	
 }

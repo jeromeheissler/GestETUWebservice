@@ -31,11 +31,12 @@ POST	/editStudentModal				controllers.Student.editStudentModal()
 POST	/editStudent					controllers.Student.editStudent()
 GET		/loadOneStudent/:id				controllers.Student.loadOneStudent(id: String)
 
-
 GET		/markAdd						controllers.Mark.markAdd()
 GET		/subject						controllers.Mark.subject()
 POST	/saveMark						controllers.Mark.saveMark()
 POST	/delMark						controllers.Mark.delMark()
+GET		/importCSV						controllers.Mark.importCSV()
+POST 	/uploadCSV						controllers.Mark.uploadCSV()
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               	controllers.Assets.at(path="/public", file)

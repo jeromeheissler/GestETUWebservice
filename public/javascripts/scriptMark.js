@@ -63,7 +63,9 @@ function addMark()	{
 }
 
 function importMark()	{
-	
+	$.get("/importCSV", function(data) {
+		$("#markContent").html(data);
+	});
 }
 
 var saveMarkValue = {};var saveSubject = {};var saveBtn = {};

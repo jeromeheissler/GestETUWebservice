@@ -1,0 +1,24 @@
+<input id="fileupload" type="file" name="files[]" data-url="/uploadCSV" multiple>
+<script>
+$(function () {
+    $('#fileupload').fileupload({
+        dataType: 'json',
+        done: function (e, data) {
+        	$('#progress').css('display','none');
+            $.each(data.result.files, function (index, file) {
+                //$('<p/>').text(file.name).appendTo(document.body);
+            });  
+        },
+	    progressall: function (e, data) {
+	        var progress = parseInt(data.loaded / data.total * 100, 10);
+	        $('#progress .bar').css('width',progress + '%');
+	    },
+	    start: function()	{
+	    	$('#progress').css('display','block');
+	    }
+    });
+});
+</script>
+<div id="progress" style="background:#333;display:none">
+    <div class="bar" style="width: 0%;height: 18px;background-image:url(@routes.Assets.at("images/progressbar.gif"));"></div>
+</div>
