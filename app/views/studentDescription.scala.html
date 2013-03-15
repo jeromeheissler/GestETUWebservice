@@ -1,4 +1,4 @@
-@(status: Int, student: StudentModel)
+@(status: Int, student: StudentModel, promolist : List[PromotionModel])
 
 <a href="javascript:history.go(-1);">go back</a>
 @if(status == 404)	{
@@ -6,11 +6,61 @@
 We can not load you student.
 </div>
 }else	{
-	<div class="span11">
-		<h2 class="span7 edithover">@student.getNumStu() - @student.getFirstname() @student.getLastname()
-			<div class="editmsg"><img src="/assets/images/pen.png" /><span class="uiButtonText">Edit</span></div>
-		</h2>
-		<h4 class="span3 offset1 edithover">Promotion : @if(student.getPromotion()!=null){@student.getPromotion().getAnnee()}</h4>
+	<div class="span11" id="headerDescription">
+		<h2 class="span7">@student.getNumStu() - @student.getFirstname() @student.getLastname()</h2>
+		<h4 class="span3 offset1">Promotion : @if(student.getPromotion()!=null){@student.getPromotion().getLabel() @student.getPromotion().getAnnee()}</h4>
+		<span class="span1" style="margin-top:30px;color:#36c;cursor: pointer" role="button" data-toggle="modal" data-target="#myModal" >[edit]</span>
+
+		<!-- Modal -->
+		<div id="myModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  			<div class="modal-header">
+    			<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+    			<h3 id="myModalLabel">Edit name and promotion</h3>
+  			</div>
+		 	<div class="modal-body">
+		    	<form class="form-horizontal">
+				  <div class="control-group">
+				    <label class="control-label" for="inputfirstname">firstname</label>
+				    <div class="controls">
+				      <input type="text" id="inputfirstname" value="@student.getFirstname()" />
+				    </div>
+				  </div>
+				  <div class="control-group">
+				    <label class="control-label" for="inputlastname">lastname</label>
+				    <div class="controls">
+				      <input type="text" id="inputlastname" value="@student.getLastname()" />
+				    </div>
+				  </div>
+				  <div class="control-group">
+				    <label class="control-label" for="inputstunumber">student number</label>
+				    <div class="controls">
+				      <input type="text" id="inputstunumber" value="@student.getNumStu()" />
+				    </div>
+				  </div>
+				  <div class="control-group">
+				    <label class="control-label" for="inputmail">mail</label>
+				    <div class="controls">
+				      <input type="text" id="inputmail" value="@student.getEmail()" />
+				    </div>
+				  </div>
+				  <div class="control-group">
+				    <label class="control-label" for="inputpromotion">promotion</label>
+				    <div class="controls">
+				      <select>
+				      @for(promo <- promolist)	{
+				      	<option @if(promo.id() == student.getPromotion().id()) {selected="selected"} value="@promo.id()">@promo.getLabel() @promo.getAnnee()</option>
+					  }
+				      </select>
+				      <input type="hidden" id="idstu" value="@student.id()" />
+				    </div>
+				  </div>
+				</form>
+		  	</div>
+		  	<div class="modal-footer">
+		    	<button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+		    	<button class="btn btn-primary" onclick="editStudentModel()">Save changes</button>
+		  	</div>
+		</div>
 	</div>
 	<div class="span11"><h4>marks :</h4>
 	<table class="table">

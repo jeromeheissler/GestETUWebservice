@@ -165,3 +165,28 @@ function saveStudent(id)	{
 }
 
 
+function editStudentModel () {
+	var jqxhr = $.post("/editStudentModal", {"id":$("#idstu").val(), "firstname":$($("#myModal form input")[0]).val(), "lastname":$($("#myModal form input")[1]).val(), "numstu":$($("#myModal form input")[2]).val(), "mail":$($("#myModal form input")[3]).val(), "promo":$("#myModal form select option:selected").val() } , function(data) {
+		  if(data.state == "success")	{
+			  var strfirstname = $($("#myModal form input")[0]).val();
+			  var strlastname = $($("#myModal form input")[1]).val();
+			  var strnumstu = $($("#myModal form input")[2]).val();
+			  var strpromo = $("#myModal form select option:selected").text();
+			  $("#headerDescription h2").html(strnumstu+" - "+strfirstname+" "+strlastname);
+			  $("#headerDescription h4").html(strpromo);
+			  $('#myModal').modal('hide');
+		  }else	{
+			  $("#content").prepend('<div class="alert alert-error">'+
+					  '<button type="button" class="close" data-dismiss="alert">&times;</button>'+
+					  '<strong>Error!</strong> Something is wrong when we tried to validate the form.'+
+					'</div>');
+			  $('#myModal').modal('hide');
+		  }
+		}, "json").fail(function() { 
+			$("#content").prepend('<div class="alert alert-error">'+
+					  '<button type="button" class="close" data-dismiss="alert">&times;</button>'+
+					  '<strong>Error!</strong> Something is wrong when we tried to validate the form.'+
+					'</div>');
+			$('#myModal').modal('hide');
+		});
+}

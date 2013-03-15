@@ -27,6 +27,7 @@ POST	/editPromotion					controllers.Promotion.editPromotion()
 GET		/student						controllers.Student.student()
 GET		/studentAdd						controllers.Student.studentAdd()
 POST	/delStudent						controllers.Student.delStudent()
+POST	/editStudentModal				controllers.Student.editStudentModal()
 POST	/editStudent					controllers.Student.editStudent()
 GET		/loadOneStudent/:id				controllers.Student.loadOneStudent(id: String)
 
