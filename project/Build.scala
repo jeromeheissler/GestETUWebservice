@@ -13,7 +13,7 @@ object ApplicationBuild extends Build {
       "com.google.code.morphia"    % "morphia-validation"    % "0.99",
       "commons-lang" 				% "commons-lang" 		 % "2.3",
       
-      "org.mongodb" % "mongo-java-driver" % "2.8.3",
+      "org.mongodb" % "mongo-java-driver" % "2.10.1",
       "de.flapdoodle.embedmongo" % "de.flapdoodle.embedmongo" % "1.11",
       "commons-io" % "commons-io" % "2.4",
       "org.scribe" % "scribe" % "1.1.2"
