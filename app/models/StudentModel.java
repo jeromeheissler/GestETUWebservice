@@ -9,7 +9,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.google.code.morphia.annotations.Id;
+import com.google.code.morphia.annotations.Indexed;
 import com.google.code.morphia.annotations.Reference;
+import com.google.code.morphia.query.Query;
 
 import leodagdag.play2morphia.Model;
 
@@ -34,6 +36,16 @@ public class StudentModel extends Model {
 	private List<TestModel> lstTest;
 	
 	public static Finder<ObjectId, StudentModel> finder = new Finder<ObjectId, StudentModel>(ObjectId.class, StudentModel.class);
+	
+	public static StudentModel findOwner(TestModel test)	{
+		Query<StudentModel> query = finder.getDatastore().createQuery(StudentModel.class);
+		return query.field("lstTest").hasThisElement(test).get();
+	}
+	
+	public static List<StudentModel> findWithPromotion(PromotionModel promo)	{
+		Query<StudentModel> query = finder.getDatastore().createQuery(StudentModel.class);
+		return query.field("promotion").equal(promo).asList();
+	}
 	
 	public StudentModel()	{
 		lstTest = new ArrayList<TestModel>();

@@ -30,7 +30,8 @@ public class Student extends Controller {
 			node.put("numstu", student.getNumStu());
 			node.put("mail", student.getEmail());
 			PromotionModel promo = student.getPromotion();
-			node.put("promo", promo.getLabel()+" "+promo.getAnnee());
+			if(promo != null)
+				node.put("promo", promo.getLabel()+" "+promo.getAnnee());
 			ret.add(node);
 		}
 		return ok(ret);

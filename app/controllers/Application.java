@@ -15,7 +15,6 @@ public class Application extends Controller {
 	public static Result index(boolean formError) {
 		if(session().containsKey("idTeacher"))
 			return redirect(routes.Application.dashboard(""));
-		
 		return ok(index.render(formError));
 	}
 	

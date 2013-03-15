@@ -1,6 +1,9 @@
 package controllers;
 
+import java.util.List;
+
 import models.PromotionModel;
+import models.StudentModel;
 
 import org.bson.types.ObjectId;
 import org.codehaus.jackson.node.ArrayNode;
@@ -49,6 +52,11 @@ public class Promotion extends Controller {
 		JsonNodeFactory factory = JsonNodeFactory.instance;
 		ObjectNode node = new ObjectNode(factory);
 		if(promo != null)	{
+			
+			List<StudentModel> all = StudentModel.findWithPromotion(promo);
+			for(StudentModel stu : all)
+				stu.setPromotion(null);
+			
 			promo.delete();
 			node.put("state", "success");
 		}else	{

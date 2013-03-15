@@ -6,14 +6,28 @@
 We can not load you student.
 </div>
 }else	{
-	<div class="span12">
-		<h1 class="span7">@student.getNumStu() - @student.getFirstname() @student.getLastname()</h1>
-		<h4 class="span3 offset2">Promotion : @student.getPromotion().getAnnee()</h4>
+	<div class="span11">
+		<h2 class="span7 edithover">@student.getNumStu() - @student.getFirstname() @student.getLastname()
+			<div class="editmsg"><img src="/assets/images/pen.png" /><span class="uiButtonText">Edit</span></div>
+		</h2>
+		<h4 class="span3 offset1 edithover">Promotion : @if(student.getPromotion()!=null){@student.getPromotion().getAnnee()}</h4>
 	</div>
-	<div class="span12"><h4>marks :</h4>
-	<ul>
+	<div class="span11"><h4>marks :</h4>
+	<table class="table">
 	@for(test <- student.getLstTest())	{
-		<li>@if(test.getSubject() != null){ test.getSubject().getName() }else{ unknow } : test.getNote() </li>
+		<tr id="@test.id()-@session().get("idTeacher")">
+			<td>@if(test.getSubject() != null){@test.getSubject().getName()}else{Unknow}</td>
+			<td>@test.getNote()</td>
+			<td>
+			@if(test.getTeacher().id() == session().get("idTeacher"))	{
+				<div class="btn-group">
+					<button onclick="editMark('@test.id()-@session().get("idTeacher")')"  class="btn">Edit</button>
+					<button onclick="deleteMark('@test.id()-@session().get("idTeacher")')" class="btn btn-danger">Delete</button>
+				</div>
+			</td>
+			}
+		</tr>
 	}
-	</ul></div>
+	</table>
+	</div>
 }

@@ -65,3 +65,59 @@ function addMark()	{
 function importMark()	{
 	
 }
+
+var saveMarkValue = {};var saveSubject = {};var saveBtn = {};
+function editMark(id)	{
+	saveSubject[id] = $($("#"+id+" td")[0]).text();
+	saveMarkValue[id] = $($("#"+id+" td")[1]).text();
+	saveBtn[id] = $($("#"+id+" td")[2]).html();
+	$($("#"+id+" td")[0]).html('<input id="inputsubject" class="input-small" type="text" name="subject" value="'+saveSubject[id]+'">');
+	$($("#"+id+" td")[1]).html('<input id="inputmark" class="input-small" type="text" name="mark" value="'+saveMarkValue[id]+'">');
+	$($("#"+id+" td")[2]).html('<div class="btn-group"><button onclick="saveMark(\''+id+'\')"  class="btn btn-info">Save</button><button onclick="cancelMark(\''+id+'\')" class="btn">Cancel</button></div>');
+}
+
+function saveMark(id)	{
+	var jqxhr = $.post("/saveMark", {"id":id, "subject":$($("#"+id+" td input")[0]).val(), "mark":$($("#"+id+" td input")[1]).val()} , function(data) {
+		  if(data.state == "success")	{
+			  var str1 = $($("#"+id+" td input")[0]).val();
+			  var str2 = $($("#"+id+" td input")[1]).val();
+			  $($("#"+id+" td")[0]).html(str1);
+			  $($("#"+id+" td")[1]).html(str2);
+			  $($("#"+id+" td")[2]).html(saveBtn[id]);
+		  }else	{
+			  $("#content").prepend('<div class="alert alert-error">'+
+					  '<button type="button" class="close" data-dismiss="alert">&times;</button>'+
+					  '<strong>Error!</strong> Something is wrong when we tried to validate the form.'+
+					'</div>');
+		  }
+		}, "json").fail(function() { 
+			$("#content").prepend('<div class="alert alert-error">'+
+					  '<button type="button" class="close" data-dismiss="alert">&times;</button>'+
+					  '<strong>Error!</strong> Something is wrong when we tried to validate the form.'+
+					'</div>');
+		});
+}
+
+function cancelMark(id)	{
+	$($("#"+id+" td")[0]).html(saveSubject[id]);
+	$($("#"+id+" td")[1]).html(saveMarkValue[id]);
+	$($("#"+id+" td")[2]).html(saveBtn[id]);	
+}
+
+function deleteMark(id)	{
+	var jqxhr = $.post("/delMark", {"id":id } , function(data) {
+		  if(data.state == "success")	{
+			  $("#"+id).remove();
+		  }else	{
+			  $("#content").prepend('<div class="alert alert-error">'+
+					  '<button type="button" class="close" data-dismiss="alert">&times;</button>'+
+					  '<strong>Error!</strong> Something is wrong when we tried to validate the form.'+
+					'</div>');
+		  }
+		}, "json").fail(function() { 
+			$("#content").prepend('<div class="alert alert-error">'+
+					  '<button type="button" class="close" data-dismiss="alert">&times;</button>'+
+					  '<strong>Error!</strong> Something is wrong when we tried to validate the form.'+
+					'</div>');
+		});
+}

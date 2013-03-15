@@ -8,6 +8,8 @@ import org.codehaus.jackson.node.ArrayNode;
 import org.codehaus.jackson.node.JsonNodeFactory;
 import org.codehaus.jackson.node.ObjectNode;
 
+import com.google.code.morphia.query.Query;
+
 import models.StudentModel;
 import models.SubjectModel;
 import models.TeacherModel;
@@ -16,6 +18,8 @@ import models.TestModel;
 import views.html.*;
 
 public class Mark extends Controller {
+	
+	private static JsonNodeFactory factory = JsonNodeFactory.instance;
 	
 	public static Result markAdd()	{
 		return ok(markAdd.render());
@@ -50,7 +54,7 @@ public class Mark extends Controller {
 				test.setSubject(sub);
 			}else	{
 				sub = new SubjectModel();
-				sub.setName(subject);
+				sub.setName(subject.toLowerCase().trim());
 				sub.insert();
 			
 				test.setSubject(sub);
@@ -67,8 +71,7 @@ public class Mark extends Controller {
 	}
 	
 	public static Result subject()	{
-		SubjectModel[] all = SubjectModel.finder.all().toArray(new SubjectModel[0]);
-		JsonNodeFactory factory = JsonNodeFactory.instance;
+		SubjectModel[] all = SubjectModel.finder.all().toArray(new SubjectModel[0]);	
 		ArrayNode ret = new ArrayNode(factory);
 		for(SubjectModel subject : all)	{
 			ObjectNode node = new ObjectNode(factory);
@@ -77,6 +80,61 @@ public class Mark extends Controller {
 			ret.add(node);
 		}
 		return ok(ret);
+	}
+	
+	public static Result saveMark()	{
+		
+		DynamicForm saveMark = form().bindFromRequest();
+		
+		String ids = saveMark.field("id").value();
+		String subject = saveMark.field("subject").value();
+		String mark = saveMark.field("mark").value();
+		
+		String[] idx = ids.split("-");
+		ObjectNode node = new ObjectNode(factory);
+		if(idx.length >= 2 && idx[1].compareTo(session().get("idTeacher")) == 0)	{
+			TestModel test = TestModel.finder.byId(new ObjectId(idx[0]));
+			if(test != null)	{
+				 SubjectModel sub = SubjectModel.findByName(subject);
+				 if(sub == null)	{
+					 sub = new SubjectModel();
+					 sub.setName(subject.toLowerCase().trim());
+					 sub.insert();
+				 }
+				 test.setSubject(sub);
+				 test.setNote(Float.parseFloat(mark));
+				 test.update();
+				 node.put("state", "success");
+			}else	{
+				node.put("state", "fail");
+			}
+		}else	{
+			node.put("state", "fail");
+		}
+		return ok(node);
+	}
+	
+	public static Result delMark()	{
+		DynamicForm saveMark = form().bindFromRequest();
+		String ids = saveMark.field("id").value();
+		
+		String[] idx = ids.split("-");
+		ObjectNode node = new ObjectNode(factory);
+		if(idx.length >= 2 && idx[1].compareTo(session().get("idTeacher")) == 0)	{
+			TestModel test = TestModel.finder.byId(new ObjectId(idx[0]));
+			if(test != null)	{
+				StudentModel owner = StudentModel.findOwner(test);
+				owner.delTest(test);
+				owner.update();
+				test.delete();
+				node.put("state", "success");
+			}else	{
+				node.put("state", "fail");
+			}
+		}else	{
+			node.put("state", "fail");
+		}
+		return ok(node);
 	}
 	
 }
