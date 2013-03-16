@@ -1,6 +1,6 @@
 
-	<div class="span11">
-		<input id="fileupload" type="file" name="files[]" data-url="/uploadCSV" style="display:none"/>
+	<div class="span11" id="upup">
+		<input id="fileupload" type="file" name="files[]" data-url="/uploadCSV" style="display:none"/ multiple>
 		<div class="input-append">
 			<input id="inputFile" class="input-xlarge" type="text" onclick="$('input[id=fileupload]').click()" />
 			<span class="btn" onclick="$('input[id=fileupload]').click()">Browse</span>
@@ -38,7 +38,17 @@ $(function () {
         	$("#inputFile").removeAttr("disabled","");
         	$("#inputFile").val("");
             $.each(data.result.files, function (index, file) {
-                //$('<p/>').text(file.name).appendTo(document.body);
+                if(file.status != "success")	{
+                	$("#upup").append('<div class="alert alert-error">'+
+      					  '<button type="button" class="close" data-dismiss="alert">&times;</button>'+
+      					  '<strong>Error!</strong> Something is wrong during the processing of the file '+file.name+
+      					'</div>');
+                }else	{
+                	$("#upup").append('<div class="alert alert-success">'+
+                		  '<button type="button" class="close" data-dismiss="alert">&times;</button>'+
+        				  '<strong>Result : </strong> the processing of the file '+file.name+' insert '+file.dataInsert+' mark'+
+                		'</div>');
+                }
             });  
         },
 	    progressall: function (e, data) {

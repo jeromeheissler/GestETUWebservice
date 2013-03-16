@@ -30,7 +30,11 @@ function allStudent()	{
 		items.push('<tr><th>Fistname</th><th>LastName</th><th>Mail</th><th>Stu. Number</th><th>Promotion</th><th></th></tr>');  
  
 		$.each(data, function(key, val) {
-		    items.push('<tr id="' + val.id + '"><td>'+val.firstname+'</td><td>'+val.lastname+'</td><td>'+val.mail+'</td><td>'+val.numstu+'</td><td>'+val.promo+'</td><td><div class="btn-group"><button onclick="editStudent(\''+val.id+'\')"  class="btn">Edit</button><button onclick="delStudent(\''+val.id+'\')" class="btn btn-danger">Delete</button><button onclick="viewStudent(\''+val.id+'\')" class="btn btn-success">View</button></div><div></div</td></tr>');
+			if(val.firstname == null || val.lastname == null || val.mail == null || val.promo == null)	
+				items.push('<tr class="warning" id="' + val.id + '"><td>'+val.firstname+'</td><td>'+val.lastname+'</td><td>'+val.mail+'</td><td>'+val.numstu+'</td><td>'+val.promo+'</td><td><div class="btn-group"><button onclick="editStudent(\''+val.id+'\')"  class="btn">Edit</button><button onclick="delStudent(\''+val.id+'\')" class="btn btn-danger">Delete</button><button onclick="viewStudent(\''+val.id+'\')" class="btn btn-success">View</button></div><div></div</td></tr>');
+			else
+				items.push('<tr id="' + val.id + '"><td>'+val.firstname+'</td><td>'+val.lastname+'</td><td>'+val.mail+'</td><td>'+val.numstu+'</td><td>'+val.promo+'</td><td><div class="btn-group"><button onclick="editStudent(\''+val.id+'\')"  class="btn">Edit</button><button onclick="delStudent(\''+val.id+'\')" class="btn btn-danger">Delete</button><button onclick="viewStudent(\''+val.id+'\')" class="btn btn-success">View</button></div><div></div</td></tr>');
+			
 		});
 		
 		$('#studentContent').html($('<table/>', {

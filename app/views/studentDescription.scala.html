@@ -1,13 +1,13 @@
 @(status: Int, student: StudentModel, promolist : List[PromotionModel])
 
-<a href="javascript:history.go(-1);">go back</a>
+<span style="color:#36c;cursor: pointer" onclick="history.go(-1);">go back</span>
 @if(status == 404)	{
 <div class="alert alert-error">
 We can not load you student.
 </div>
 }else	{
 	<div class="span11" id="headerDescription">
-		<h2 class="span7">@student.getNumStu() - @student.getFirstname() @student.getLastname()</h2>
+		<h2 class="span7">@student.getNumStu() - @if(student.getFirstname()!=null){@student.getFirstname()} @if(student.getLastname() != null){@student.getLastname()}</h2>
 		<h4 class="span3 offset1">Promotion : @if(student.getPromotion()!=null){@student.getPromotion().getLabel() @student.getPromotion().getAnnee()}</h4>
 		<span class="span1" style="margin-top:30px;color:#36c;cursor: pointer" role="button" data-toggle="modal" data-target="#myModal" >[edit]</span>
 
@@ -48,7 +48,7 @@ We can not load you student.
 				    <div class="controls">
 				      <select>
 				      @for(promo <- promolist)	{
-				      	<option @if(promo.id() == student.getPromotion().id()) {selected="selected"} value="@promo.id()">@promo.getLabel() @promo.getAnnee()</option>
+				      	<option @if(student.getPromotion()!= null && promo.id() == student.getPromotion().id()) {selected="selected"} value="@promo.id()">@promo.getLabel() @promo.getAnnee()</option>
 					  }
 				      </select>
 				      <input type="hidden" id="idstu" value="@student.id()" />
