@@ -1,6 +1,7 @@
 package controllers;
 
 import java.io.IOException;
+import java.util.List;
 
 import models.PromotionModel;
 import models.StudentModel;
@@ -83,7 +84,18 @@ public class Api extends Controller {
 			return ok(ret);
 		}else	{
 			PromotionModel promo = PromotionModel.finder.byId(new ObjectId(id));
-			String json = mapper.writeValueAsString(promo);;
+			String json = mapper.writeValueAsString(promo);
+			json = json.substring(0, json.length() - 1);
+			
+			json += ", \"lstEtu\" : [";
+			
+			List<StudentModel> all = StudentModel.findWithPromotion(promo);
+			for(StudentModel stu : all)	{
+				json+= mapper.writeValueAsString(stu)+",";
+			}
+			json = json.substring(0, json.length() - 1);
+			json += "]}";
+			
 			return ok(json);
 		}	
 	}

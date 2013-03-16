@@ -1,0 +1,55 @@
+@(me : TeacherModel)
+
+<form class="form-horizontal" id="formInfo" onsubmit="return false;">
+  <div class="control-group">
+    <label class="control-label" for="inputEmail">Email</label>
+    <div class="controls">
+      <input type="text" id="inputEmail" value="@me.getMail()">
+    </div>
+  </div>
+  <div class="control-group">
+    <label class="control-label" for="inputfirstname">first name</label>
+    <div class="controls">
+      <input type="text" id="inputfirstname" value="@me.getFirstname()">
+    </div>
+  </div>
+  <div class="control-group">
+    <label class="control-label" for="inputlastname">last name</label>
+    <div class="controls">
+      <input type="text" id="inputlastname" value="@me.getLastname()">
+    </div>
+  </div>
+  <div class="control-group">
+    <div class="controls">
+      <button type="submit" class="btn" onclick="saveInfo()">Save</button>
+    </div>
+  </div>
+</form>
+
+<hr/>
+
+<form class="form-horizontal" id="formPassword" onsubmit="return false;">
+<div class="control-group">
+    <label class="control-label" for="inputpassword1">old password</label>
+    <div class="controls">
+      <input type="password" id="inputpassword1" value="">
+    </div>
+  </div>
+  <div class="control-group">
+    <label class="control-label" for="inputpassword2">new password</label>
+    <div class="controls">
+      <input type="password" id="inputpassword2" value="">
+    </div>
+  </div>
+  <div class="control-group">
+    <label class="control-label" for="inputpassword3">retype password</label>
+    <div class="controls">
+      <input type="password" id="inputpassword3" value="">
+    </div>
+  </div>
+  <div class="control-group">
+    <div class="controls">
+      <button type="submit" class="btn" onclick="changePassword()">Save</button>
+    </div>
+  </div>
+</form>

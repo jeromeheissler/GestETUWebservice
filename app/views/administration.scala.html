@@ -1,0 +1,21 @@
+@(me : TeacherModel, all : List[TeacherModel])
+
+<table class="table">
+	<tr><th>Mail</th><th>First name</th><th>Last name</th><th></th></tr>
+	<tr>
+		<td><input id="inputmail" class="input-medium" type="text" name="mail" placeholder="mail"></td>
+		<td><input id="inputfirstname" class="input-medium" type="text" name="firstname" placeholder="first name"></td>
+		<td><div class="input-append"><input type="text" class="input-medium" id="inputlastname" name="lastname" placeholder="last name"><button onclick="addTeacher()" class="btn" type="button">Save</button></div></td>
+		<td></td>
+	</tr>
+	@for(teacher <- all)	{
+		@if(!teacher.isDelete())	{
+		<tr id="@teacher.id()">
+			<td>@teacher.getMail()</td>
+			<td>@teacher.getFirstname()</td>
+			<td>@teacher.getLastname()</td>
+			<td>@if(teacher.id() != me.id()){<div class="btn-group"><button onclick="resetPassword('@teacher.id()')"  class="btn">reset password</button><button onclick="delTeacher('@teacher.id()')" class="btn btn-danger">Delete</button></div>}</td>
+		</tr>
+		}
+	}
+</table>

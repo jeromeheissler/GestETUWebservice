@@ -30,6 +30,13 @@ $(document).ready(function(){
 				}else	{
 					addMark();
 				}
+			}else if(event.pathNames[0] == "settings"){
+				loadSettings();
+				if(event.pathNames[1] == "administration")	{
+					loadAdministration();
+				}else	{
+					loadAccount();
+				}
 			}else if(event.pathNames[0] == "logout"){
 				window.location = "/logout";
 			}

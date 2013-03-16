@@ -20,6 +20,9 @@ public class TeacherModel extends Model {
 	private String firstname;
 	private String lastname;
 	
+	@JsonIgnore
+	private boolean isDelete;
+	
 	public static Finder<ObjectId, TeacherModel> finder = new Finder<ObjectId, TeacherModel>(ObjectId.class, TeacherModel.class);
 
 	public static TeacherModel findByLoginHashedPass(String login, String pass)	{
@@ -66,6 +69,14 @@ public class TeacherModel extends Model {
 
 	public void setLastname(String lastname) {
 		this.lastname = lastname;
+	}
+
+	public boolean isDelete() {
+		return isDelete;
+	}
+
+	public void setDelete(boolean isDelete) {
+		this.isDelete = isDelete;
 	}
 	
 }

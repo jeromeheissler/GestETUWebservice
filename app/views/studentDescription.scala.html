@@ -69,7 +69,7 @@ We can not load you student.
 			<td>@if(test.getSubject() != null){@test.getSubject().getName()}else{Unknow}</td>
 			<td>@test.getNote()</td>
 			<td>
-			@if(test.getTeacher().id() == session().get("idTeacher"))	{
+			@if(test.getTeacher().id() == session().get("idTeacher") || test.getTeacher().isDelete())	{
 				<div class="btn-group">
 					<button onclick="editMark('@test.id()-@session().get("idTeacher")')"  class="btn">Edit</button>
 					<button onclick="deleteMark('@test.id()-@session().get("idTeacher")')" class="btn btn-danger">Delete</button>
