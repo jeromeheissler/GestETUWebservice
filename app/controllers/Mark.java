@@ -155,26 +155,64 @@ public class Mark extends Controller {
 		List<FilePart> files = uploadForm.getFiles();
 		ArrayNode ret = new ArrayNode(factory);
 		for(FilePart file : files)	{
+			ObjectNode node = new ObjectNode(factory);
+			node.put("name", file.getFilename());
+			
 			File thefile = file.getFile();
 			try {
 				BufferedReader br = new BufferedReader(new FileReader(thefile));
 				//lire la premiere ligne
 			    String tmp = br.readLine();
-			    //lire toute les ligne pour enregistrer les nom des substances 
-			    while ( (tmp=br.readLine())!=null ) {
-			    	String[] splitted = tmp.split(";");
+			    String[] header = tmp.split(";");
+			    if(header.length == 4 && header[0].equalsIgnoreCase("date") && header[1].equalsIgnoreCase("numstudent") &&
+			       header[2].equalsIgnoreCase("subject") && header[3].equalsIgnoreCase("mark"))	{  	    
+				    node.put("status", "success");
+				    int nbData = 0;
+				    
+			    	//lire toute les ligne pour enregistrer les nom des substances 
+				    while ( (tmp=br.readLine())!=null ) {
+				    	String[] splitted = tmp.split(";");
 						
-				}
+				    	StudentModel student = StudentModel.findByStudentNumber(splitted[1]);
+				    	
+				    	if(student == null)	{
+				    		student = new StudentModel();
+				    		student.setNumStu(splitted[1]);
+				    		student.insert();
+				    	}
+				    	
+				    	SubjectModel sub = SubjectModel.findByName(splitted[2].toLowerCase());
+				    	if(sub == null)	{
+				    		sub = new SubjectModel();
+				    		sub.setName(splitted[2].toLowerCase());
+				    		sub.insert();
+				    	}
+				    	
+				    	TestModel test = new TestModel();
+				    	test.setNote(Float.parseFloat(splitted[3]));
+				    	test.setSubject(sub);
+				    	test.setDate(splitted[0]);
+				    	test.setTeacher(TeacherModel.finder.byId(new ObjectId(session().get("idTeacher"))));
+				    	test.insert();
+				    	
+				    	student.addTest(test);
+				    	student.update();
+				    	
+				    	nbData ++;
+					}
+				    
+				    node.put("dataInsert", nbData);
+			    }else	{
+			    	node.put("status", "fail");
+			    	node.put("msg", "the header was not valid");
+			    }
 			    br.close();
 			} catch (FileNotFoundException e) {
 				e.printStackTrace();
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
-		    
-			
-			ObjectNode node = new ObjectNode(factory);
-			node.put("name", file.getFilename());
+		    	
 			ret.add(node);
 		}	
 		ObjectNode jsonfiles = new ObjectNode(factory);

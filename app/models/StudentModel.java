@@ -47,6 +47,11 @@ public class StudentModel extends Model {
 		return query.field("promotion").equal(promo).asList();
 	}
 	
+	public static StudentModel findByStudentNumber(String number)	{
+		Query<StudentModel> query = finder.getDatastore().createQuery(StudentModel.class);
+		return query.field("numStu").equal(number).get();
+	}
+	
 	public StudentModel()	{
 		lstTest = new ArrayList<TestModel>();
 	}

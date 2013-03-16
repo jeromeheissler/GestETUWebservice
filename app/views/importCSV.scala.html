@@ -1,10 +1,42 @@
-<input id="fileupload" type="file" name="files[]" data-url="/uploadCSV" multiple>
+
+	<div class="span11">
+		<input id="fileupload" type="file" name="files[]" data-url="/uploadCSV" style="display:none"/>
+		<div class="input-append">
+			<input id="inputFile" class="input-xlarge" type="text" onclick="$('input[id=fileupload]').click()" />
+			<span class="btn" onclick="$('input[id=fileupload]').click()">Browse</span>
+		</div>
+		<div id="progress" style="background:#333;display:none">
+		    <div class="bar" style="width: 0%;height: 18px;background-image:url(@routes.Assets.at("images/progressbar.gif"));"></div>
+		</div>
+	</div>
+
+
+	<div class="span11">
+		<div class="bs-docs-example">The file must be a CSV and must be of the form : </div>
+		<pre class="prettyprint linenums">
+			<ol class="linenums">
+				<li class="L0">date;numstudent;subject;mark</li>
+				<li class="L1">03/25/13;21004735;mathematical;18</li>
+				<li class="L2">03/25/13;21004736;mathematical;4</li>
+				<li class="L3">...</li>
+				<li class="L4">mm/dd/yy;xxxxxxxx;some text;mark</li>
+			</ol>
+		</pre>
+	</div>
+
 <script>
+$("input[id=fileupload]").change(function()	{
+	$("#inputFile").val($(this).val());
+	$("#inputFile").attr("disabled","disabled");
+});
+
 $(function () {
     $('#fileupload').fileupload({
         dataType: 'json',
         done: function (e, data) {
         	$('#progress').css('display','none');
+        	$("#inputFile").removeAttr("disabled","");
+        	$("#inputFile").val("");
             $.each(data.result.files, function (index, file) {
                 //$('<p/>').text(file.name).appendTo(document.body);
             });  
@@ -19,6 +51,3 @@ $(function () {
     });
 });
 </script>
-<div id="progress" style="background:#333;display:none">
-    <div class="bar" style="width: 0%;height: 18px;background-image:url(@routes.Assets.at("images/progressbar.gif"));"></div>
-</div>

@@ -20,6 +20,8 @@ public class TestModel extends Model {
 	private SubjectModel subject;
 	private float note;
 	
+	private String date;
+	
 	@Reference(lazy=true)
 	private TeacherModel teacher;
 	
@@ -50,6 +52,14 @@ public class TestModel extends Model {
 
 	public void setTeacher(TeacherModel teacher) {
 		this.teacher = teacher;
+	}
+
+	public String getDate() {
+		return date;
+	}
+
+	public void setDate(String date) {
+		this.date = date;
 	}
 	
 }
