@@ -87,7 +87,7 @@ public class Api extends Controller {
 			String json = mapper.writeValueAsString(promo);
 			json = json.substring(0, json.length() - 1);
 			
-			json += ", \"lstEtu\" : [";
+			json += ", \"lstEtu\" : [ ";
 			
 			List<StudentModel> all = StudentModel.findWithPromotion(promo);
 			for(StudentModel stu : all)	{
