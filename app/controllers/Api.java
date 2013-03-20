@@ -66,10 +66,18 @@ public class Api extends Controller {
 	}
 	
 	public static Result addStudent() throws JsonParseException, JsonMappingException, IOException {
-		/*StudentModel student = mapper.readValue(request().body().asJson(), StudentModel.class);
-		student.insert();*/
+		DynamicForm signinForm = form().bindFromRequest();	
+		String token = signinForm.field("t").value();
+		String json = signinForm.field("student").value();
+		
 		ObjectNode node = new ObjectNode(factory);
-		node.put("status", STATUSCODE.SUCCESS.toString());
+		if(ApiTokenModel.asToken(token))	{
+			StudentModel student = mapper.readValue(json, StudentModel.class);
+			student.insert();
+			node.put("status", STATUSCODE.SUCCESS.toString());
+		}else	{
+			node.put("status", STATUSCODE.FORBIDDEN.toString());
+		}
 		return ok(node);
 	}
 
