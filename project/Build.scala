@@ -16,7 +16,8 @@ object ApplicationBuild extends Build {
       "org.mongodb" % "mongo-java-driver" % "2.10.1",
       "de.flapdoodle.embedmongo" % "de.flapdoodle.embedmongo" % "1.11",
       "commons-io" % "commons-io" % "2.4",
-      "org.scribe" % "scribe" % "1.1.2"
+      "org.scribe" % "scribe" % "1.1.2",
+      "net.oauth.core" % "oauth-provider" % "20100527"
     )
 
     val main = PlayProject(appName, appVersion, appDependencies, mainLang = JAVA).settings(
@@ -24,8 +25,8 @@ object ApplicationBuild extends Build {
       resolvers ++= Seq(
     	    DefaultMavenRepository, 
     	    Resolvers.morphiaRepository, 
-    	    Resolvers.mongoDBRepository) 
-    )
+    	    Resolvers.mongoDBRepository)
+      )
     
     object Resolvers {
       val morphiaRepository = "Morphia repository" at "http://morphia.googlecode.com/svn/mavenrepo/"

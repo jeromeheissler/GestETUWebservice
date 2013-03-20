@@ -52,6 +52,11 @@ public class StudentModel extends Model {
 		return query.field("numStu").equal(number).get();
 	}
 	
+	public static StudentModel findByLoginHashedPass(String login, String pass)	{
+		Query<StudentModel> query = finder.getDatastore().createQuery(StudentModel.class);
+		return query.field("email").equal(login).field("password").equal(pass).get();
+	}
+	
 	public StudentModel()	{
 		lstTest = new ArrayList<TestModel>();
 	}

@@ -1,10 +1,13 @@
 package controllers;
 
 import java.io.IOException;
+import java.security.NoSuchAlgorithmException;
 import java.util.List;
 
+import models.ApiTokenModel;
 import models.PromotionModel;
 import models.StudentModel;
+import models.TeacherModel;
 import models.TestModel;
 
 import org.bson.types.ObjectId;
@@ -16,20 +19,46 @@ import org.codehaus.jackson.node.ArrayNode;
 import org.codehaus.jackson.node.JsonNodeFactory;
 import org.codehaus.jackson.node.ObjectNode;
 
+import play.data.DynamicForm;
 import play.mvc.*;
+import util.Hash;
 
 public class Api extends Controller {
 
 	private static ObjectMapper mapper = new ObjectMapper();
 	private static JsonNodeFactory factory = JsonNodeFactory.instance;
-	
-	public static Result login() {
-		return ok();
-	}
 
+	public static Result login()	{
+		DynamicForm signinForm = form().bindFromRequest();	
+		String email = signinForm.field("email").value();
+		
+		ObjectNode node = new ObjectNode(factory);
+		try {
+			String password = Hash.encode(signinForm.field("password").value(), "SHA-256");
+
+			TeacherModel teacher = TeacherModel.findByLoginHashedPass(email, password);
+			if(teacher == null)	{
+				StudentModel stu = StudentModel.findByLoginHashedPass(email, password);
+				if(stu == null)
+					node.put("status", "fail");
+				else	{
+					node.put("status", "success");
+					node.put("token", ApiTokenModel.generateNewToken());
+				}
+			}else	{
+				node.put("status", "success");
+				node.put("token", ApiTokenModel.generateNewToken());
+			}
+		} catch (NoSuchAlgorithmException e1) {
+			node.put("status", "fail");
+		}
+		return ok(node);
+	}
+	
 	public static Result addStudent() throws JsonParseException, JsonMappingException, IOException {
-		StudentModel student = mapper.readValue(request().body().asJson(), StudentModel.class);
-		student.insert();
+		play.Logger.debug(request().body().asText());
+		/*StudentModel student = mapper.readValue(request().body().asJson(), StudentModel.class);
+		student.insert();*/
 		ObjectNode node = new ObjectNode(factory);
 		node.put("status", 1);
 		return ok(node);
