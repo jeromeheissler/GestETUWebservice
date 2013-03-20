@@ -39,16 +39,28 @@ If you miss send your token with the t parameter, or send a fake token you will 
 ##### getting student
 You have 2 means to find student on database. Getting all student with the URI
 
+	- uri : 
 	GET		/api/student
+	- example curl : 
+	curl http://localhost:9002/api/student
+	
+	-response body : 
+	"status":"200","content":[{"id":"51443fea4e08afa658f83d69","firstname":"Nicolas","lastname":"Rosado","numStu":"21004736","email":"rosado.nicolas@etu.univ-tours.fr","promotion":{…},"lstTest":[…]},{"id":"5149b6014e08a079dfda6231","firstname":"Thibault edtied","lastname":"De maison rouge","numStu":"21004737","email":null,"promotion":{…},"lstTest":[]}]}
 	
 Or one single student with : 
 	
+	- uri : 
 	GET		/api/student/:id
+	- example curl : 
+	curl http://localhost:9002/api/student/51443fea4e08afa658f83d69
+	
+	-reponse body : 
+	{"status":"200","content":{"id":"51443fea4e08afa658f83d69","firstname":"Nicolas","lastname":"Rosado","numStu":"21004736","email":"rosado.nicolas@etu.univ-tours.fr","promotion":{…},"lstTest":[…]}}
 	
 
 
 ##### add student
-When you want to add a student you have to send PUT request with on parameter the representation's json of the student : 
+When you want to add a student you have to send PUT request with on parameter the json representation of the student : 
 
 	URI :
 	PUT 	/api/student
@@ -75,18 +87,39 @@ if the student you want to delete does not exist you will get the status :
 	{"status":"404"}
 
 ##### edit student
+To edit a student you have to send a POST request on the url /api/student/<id> to edit a specific student. This request need 2 parameters : the token and the json representation of the new student after edition.
 
 	POST	/api/student/:id
 		
+	example curl : 
+	curl -X "POST" http://localhost:9002/api/student/5149B6014E08A079DFDA6231 --data "t=Bz5YWSuWKUmMaZvcYcEK&student={\"firstname\":\"Thibault edtied\",\"lastname\":\"De maison rouge\",\"numStu\":\"21004737\",\"email\":null,\"promotion\":{\"annee\":1915,\"label\":\"CPVieux\"},\"lstTest\":[]}"
+	
+	response body
+	{"status":"200"}
 
-balbla
+notice : 
 
+- if the promotion does not existe on the database, it will be created during the edition.
+- if the student does not exist you will get a status code 404
+
+#### getting promotion
+Like getting student you can get the description of one or more promotion : 
+
+	- URI
 	GET		/api/promotion
-
-balbla
-
+	- example curl : 
+	curl http://localhost:9002/api/promotion
+	
+	- response body : 
+	{"status":"200","promotions":[{"id":"51443def4e08afa658f83d5d","annee":2013,"label":"DI"},{"id":"51443df64e08afa658f83d5e","annee":2012,"label":"DI"},{"id":"5149bfa24e08a079dfda6232","annee":1915,"label":"CPVieux"}]}
+	
+	- uri
 	GET		/api/promotion/:id
-
+	- example curl : 
+	curl http://localhost:9002/api/promotion/51443def4e08afa658f83d5d
+	
+	- response body : 
+	{"status":"200","promotion":{"id":"51443def4e08afa658f83d5d","annee":2013,"label":"DI","students":[{"id":"51443fea4e08afa658f83d69","firstname":"Nicolas","lastname":"Rosado","numStu":"21004736","email":"rosado.nicolas@etu.univ-tours.fr","promotion":{"id":"51443def4e08afa658f83d5d","annee":2013,"label":"DI"},"lstTest":[]}]}}
 
 balbla
 

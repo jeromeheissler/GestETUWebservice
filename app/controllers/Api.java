@@ -66,9 +66,9 @@ public class Api extends Controller {
 	}
 	
 	public static Result addStudent() throws JsonParseException, JsonMappingException, IOException {
-		DynamicForm signinForm = form().bindFromRequest();	
-		String token = signinForm.field("t").value();
-		String json = signinForm.field("student").value();
+		DynamicForm form = form().bindFromRequest();	
+		String token = form.field("t").value();
+		String json = form.field("student").value();
 		
 		ObjectNode node = new ObjectNode(factory);
 		if(ApiTokenModel.asToken(token))	{
@@ -124,38 +124,69 @@ public class Api extends Controller {
 		}
 	}
 
-	public static Result editStudent(String id) {
+	public static Result editStudent(String id) throws JsonParseException, JsonMappingException, IOException {
 		ObjectNode node = new ObjectNode(factory);
-		node.put("status", 1);
+		
+		DynamicForm form = form().bindFromRequest();
+		String token = form.field("t").value();
+		String json = form.field("student").value();
+		
+		if(ApiTokenModel.asToken(token))	{
+			StudentModel stuedited = StudentModel.finder.byId(new ObjectId(id));
+			if(stuedited != null)	{
+				StudentModel student = mapper.readValue(json, StudentModel.class);
+				stuedited.setEmail(student.getEmail());
+				stuedited.setFirstname(student.getFirstname());
+				stuedited.setLastname(student.getLastname());
+				stuedited.setNumStu(student.getNumStu());
+				
+				if(student.getPromotion().id() == null)	{
+					student.getPromotion().insert();
+				}
+				
+				stuedited.setPromotion(student.getPromotion());
+				stuedited.update();
+				
+				node.put("status", STATUSCODE.SUCCESS.toString());
+			}else	{	
+				node.put("status", STATUSCODE.NOTFOUND.toString());
+			}
+		}else	{
+			node.put("status", STATUSCODE.FORBIDDEN.toString());
+		}
+		
+		
 		return ok(node);
 	}
 
 
 	public static Result getPromotion(String id) throws JsonGenerationException, JsonMappingException, IOException {
+		ObjectNode node = new ObjectNode(factory);
 		if(id.compareTo("") == 0)	{
 			PromotionModel[] all = PromotionModel.finder.all().toArray(new PromotionModel[0]);
 			ArrayNode ret = new ArrayNode(factory);
 			for(PromotionModel promo : all)	{
-				String json = mapper.writeValueAsString(promo);
-				ret.add(json);
+				ret.add(mapper.convertValue(promo, ObjectNode.class));
 			}
-			return ok(ret);
+			node.put("status", STATUSCODE.SUCCESS.toString());
+			node.put("promotions", ret);	
 		}else	{
 			PromotionModel promo = PromotionModel.finder.byId(new ObjectId(id));
-			String json = mapper.writeValueAsString(promo);
-			json = json.substring(0, json.length() - 1);
 			
-			json += ", \"lstEtu\" : [ ";
 			
+			ObjectNode promotionObj = mapper.convertValue(promo, ObjectNode.class);			
+			
+			ArrayNode lstStudent = new ArrayNode(factory);
 			List<StudentModel> all = StudentModel.findWithPromotion(promo);
 			for(StudentModel stu : all)	{
-				json+= mapper.writeValueAsString(stu)+",";
+				lstStudent.add(mapper.convertValue(stu,ObjectNode.class));
 			}
-			json = json.substring(0, json.length() - 1);
-			json += "]}";
+			promotionObj.put("students", lstStudent);
 			
-			return ok(json);
+			node.put("status", STATUSCODE.SUCCESS.toString());
+			node.put("promotion", promotionObj);	
 		}	
+		return ok(node);
 	}
 
 	public static Result addMark() throws JsonParseException, JsonMappingException, IOException {

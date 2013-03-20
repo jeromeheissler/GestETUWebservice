@@ -23,6 +23,8 @@ public class SubjectModel extends Model {
 	
 	@JsonProperty
 	public String id()	{
+		if(id == null)
+			return null;
 		return id.toString();
 	}
 	
