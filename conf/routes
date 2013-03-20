@@ -61,7 +61,7 @@ POST	/api/student/:id				controllers.Api.editStudent(id: String)
 GET		/api/promotion					controllers.Api.getPromotion(id : String = "")
 GET		/api/promotion/:id				controllers.Api.getPromotion(id: String)
 
-PUT 	/api/mark/	  					controllers.Api.addMark()
+PUT 	/api/mark/:studentId			controllers.Api.addMark(studentId : String)
 DELETE 	/api/mark/:id 					controllers.Api.delMark(id: String)
 GET		/api/mark/:id					controllers.Api.getMark(id: String)
 POST	/api/mark/:id					controllers.Api.editMark(id: String)

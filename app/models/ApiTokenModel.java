@@ -1,13 +1,11 @@
 package models;
 
-import java.security.SecureRandom;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 
 import org.bson.types.ObjectId;
-
-import scala.Array;
 
 import com.google.code.morphia.annotations.Id;
 
@@ -24,13 +22,13 @@ public class ApiTokenModel extends Model {
 	
 	@Id
 	private ObjectId id;
-	private List<String> tokensList;
+	private HashMap<String, String> tokensList;
 	
 	/**
 	 * private constructor to unable instantiation of any object
 	 */
 	private ApiTokenModel()	{
-		tokensList = new ArrayList<String>();
+		tokensList = new HashMap<String, String>();
 	}
 	
 	private static String generator()	{
@@ -57,15 +55,19 @@ public class ApiTokenModel extends Model {
 		return all.get(0);
 	}
 	
-	public static boolean asToken(String token)	{
-		return tokenObject.tokensList.contains(token);
+	public static String getSessionId(String token)	{
+		return tokenObject.tokensList.get(token);
 	}
 	
-	public static String generateNewToken()	{
+	public static boolean asToken(String token)	{
+		return tokenObject.tokensList.containsKey(token);
+	}
+	
+	public static String generateNewToken(String mail)	{
 		String token = generator();
-		while(tokenObject.tokensList.contains(token))
+		while(tokenObject.tokensList.containsKey(token))
 			token = generator();
-		tokenObject.tokensList.add(token);
+		tokenObject.tokensList.put(token, mail);
 		tokenObject.update();
 		return token;
 	}

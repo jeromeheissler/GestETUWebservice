@@ -62,24 +62,23 @@ Or one single student with :
 ##### add student
 When you want to add a student you have to send PUT request with on parameter the json representation of the student : 
 
-	URI :
+	- uri :
 	PUT 	/api/student
-	
-	example curl : 
+	- example curl : 
 	curl -X "PUT" http://localhost:9002/api/student --data "t=Bz5YWSuWKUmMaZvcYcEK&student={\"firstname\":\"Thibault Arnaud2\",\"lastname\":\"De maison rouge\",\"numStu\":\"21004737\",\"email\":null,\"promotion\":{\"id\":\"51443e134e08afa658f83d64\",\"annee\":2013,\"label\":\"CP\"},\"lstTest\":[]}" 
 	
-	response body
+	- response body
 	{"status":"200"}
 	
 ##### delete student	
 For delete student you have to send a DELETE request with 
 
+	- uri
 	DELETE 	/api/student/:id
-	
-	example curl : 
+	- example curl : 
 	curl -X "DELETE" http://localhost:9000/api/student/514435224e08afa658f83d52 --data "t=YEvi9tqWKetymrIKYnmT"
 	
-	response body
+	- response body
 	{"status":"200"}
 
 if the student you want to delete does not exist you will get the status :
@@ -89,12 +88,12 @@ if the student you want to delete does not exist you will get the status :
 ##### edit student
 To edit a student you have to send a POST request on the url /api/student/<id> to edit a specific student. This request need 2 parameters : the token and the json representation of the new student after edition.
 
+	- uri
 	POST	/api/student/:id
-		
-	example curl : 
+	- example curl : 
 	curl -X "POST" http://localhost:9002/api/student/5149B6014E08A079DFDA6231 --data "t=Bz5YWSuWKUmMaZvcYcEK&student={\"firstname\":\"Thibault edtied\",\"lastname\":\"De maison rouge\",\"numStu\":\"21004737\",\"email\":null,\"promotion\":{\"annee\":1915,\"label\":\"CPVieux\"},\"lstTest\":[]}"
 	
-	response body
+	 - response body
 	{"status":"200"}
 
 notice : 
@@ -102,10 +101,12 @@ notice :
 - if the promotion does not existe on the database, it will be created during the edition.
 - if the student does not exist you will get a status code 404
 
-#### getting promotion
+#### work with promotion : 
+
+##### getting promotion
 Like getting student you can get the description of one or more promotion : 
 
-	- URI
+	- uri 
 	GET		/api/promotion
 	- example curl : 
 	curl http://localhost:9002/api/promotion
@@ -121,18 +122,34 @@ Like getting student you can get the description of one or more promotion :
 	- response body : 
 	{"status":"200","promotion":{"id":"51443def4e08afa658f83d5d","annee":2013,"label":"DI","students":[{"id":"51443fea4e08afa658f83d69","firstname":"Nicolas","lastname":"Rosado","numStu":"21004736","email":"rosado.nicolas@etu.univ-tours.fr","promotion":{"id":"51443def4e08afa658f83d5d","annee":2013,"label":"DI"},"lstTest":[]}]}}
 
-balbla
+#### work with mark : 
 
-	PUT 	/api/mark/
-
-balbla
-
-	DELETE 	/api/mark/:id
-
-balbla
-
+##### getting mark
+You can get information for one mark with the request : 
+	
+	- uri :
 	GET		/api/mark/:id
+	- example curl :
+	curl http://localhost:9002/api/mark/51443fea4e08afa658f83d6a
 
-balbla
+	- response body
+	{"id":"51443fea4e08afa658f83d6a","subject":{"id":"514435224e08afa658f83d53","name":"mathematical"},"note":4.0,"date":"03/25/13","teacher":{"id":"512b77a6c2e6d1ef72687f50","mail":"heissler.jerome@gmail.com","firstname":"Jérome","lastname":"Heissler","delete":false}} 
+
+
+#### add mark
+
+	- uri : 
+	PUT 	/api/mark/:idstudent
+	- example curl : 
+	curl -X "PUT" http://localhost:9002/api/mark/51443fea4e08afa658f83d69 --data "t=AfOuioBXCtRYslLbYfSj&mark={\"subject\":{\"id\":\"514435224e08afa658f83d53\",\"name\":\"mathematical\"},\"note\":14.0,\"date\":\"03/25/13\"}"
+
+#### delete mark
+	
+	- uri : 
+	DELETE 	/api/mark/:id
+	- example curl : 
+	curl -X "DELETE" http://localhost:9002/api/mark/51443fea4e08afa658f83d6a --data "t=AfOuioBXCtRYslLbYfSj"
+	
+#### edit mark
 
 	POST	/api/mark/:id

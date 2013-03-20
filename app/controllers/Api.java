@@ -38,6 +38,10 @@ public class Api extends Controller {
 	private static ObjectMapper mapper = new ObjectMapper();
 	private static JsonNodeFactory factory = JsonNodeFactory.instance;
 
+	/**
+	 * LOGIN
+	 */
+	
 	public static Result login()	{
 		DynamicForm signinForm = form().bindFromRequest();	
 		String email = signinForm.field("email").value();
@@ -53,17 +57,21 @@ public class Api extends Controller {
 					node.put("status", STATUSCODE.FAIL.toString());
 				else	{
 					node.put("status", STATUSCODE.SUCCESS.toString());
-					node.put("token", ApiTokenModel.generateNewToken());
+					node.put("token", ApiTokenModel.generateNewToken(stu.id()));
 				}
 			}else	{
 				node.put("status", STATUSCODE.SUCCESS.toString());
-				node.put("token", ApiTokenModel.generateNewToken());
+				node.put("token", ApiTokenModel.generateNewToken(teacher.id()));
 			}
 		} catch (NoSuchAlgorithmException e1) {
 			node.put("status", STATUSCODE.FAIL.toString());
 		}
 		return ok(node);
 	}
+	
+	/**
+	 *  Work with student
+	 */
 	
 	public static Result addStudent() throws JsonParseException, JsonMappingException, IOException {
 		DynamicForm form = form().bindFromRequest();	
@@ -159,7 +167,11 @@ public class Api extends Controller {
 		return ok(node);
 	}
 
-
+	
+	/**
+	 * Work with promotion
+	 */
+	
 	public static Result getPromotion(String id) throws JsonGenerationException, JsonMappingException, IOException {
 		ObjectNode node = new ObjectNode(factory);
 		if(id.compareTo("") == 0)	{
@@ -189,36 +201,60 @@ public class Api extends Controller {
 		return ok(node);
 	}
 
-	public static Result addMark() throws JsonParseException, JsonMappingException, IOException {
-		TestModel newObject = mapper.readValue(request().body().asJson(), TestModel.class);
-		if(newObject.getSubject().id() == null)	{
-			newObject.getSubject().insert();
-		}
-		newObject.insert();
+	/**
+	 * Work with mark
+	 */
+	
+	public static Result getMark(String id) throws JsonGenerationException, JsonMappingException, IOException {
+		TestModel test = TestModel.finder.byId(new ObjectId(id));
+		return ok(mapper.convertValue(test, ObjectNode.class));
+	}
+	
+	public static Result addMark(String studentid) throws JsonParseException, JsonMappingException, IOException {
+		DynamicForm form = form().bindFromRequest();	
+		String token = form.field("t").value();
+		String json = form.field("mark").value();
+		
 		ObjectNode node = new ObjectNode(factory);
-		node.put("status", 1);
+		if(ApiTokenModel.asToken(token))	{
+			String idteacher = ApiTokenModel.getSessionId(token);
+			TestModel test = mapper.readValue(json, TestModel.class);
+			test.setTeacher(TeacherModel.finder.byId(new ObjectId(idteacher)));
+			test.insert();
+			
+			StudentModel stu = StudentModel.finder.byId(new ObjectId(studentid));
+			stu.addTest(test);
+			stu.update();
+			node.put("status", STATUSCODE.SUCCESS.toString());
+		}else	{
+			node.put("status", STATUSCODE.FORBIDDEN.toString());
+		}
 		return ok(node);
 	}
 
 	public static Result delMark(String id) {
+		DynamicForm signinForm = form().bindFromRequest();	
+		String token = signinForm.field("t").value();
+
 		ObjectNode node = new ObjectNode(factory);
 		
-		TestModel test = TestModel.finder.byId(new ObjectId(id));
-		if(test != null)	{
-			test.delete();
-			node.put("status", 1);
-		} else {
-			node.put("status", 404);
+		if(ApiTokenModel.asToken(token))	{
+			TestModel test = TestModel.finder.byId(new ObjectId(id));
+			if(test != null)	{
+				StudentModel stu = StudentModel.findOwner(test);
+				stu.delTest(test);
+				stu.update();
+				
+				test.delete();
+				node.put("status", STATUSCODE.SUCCESS.toString());
+			} else {
+				node.put("status", STATUSCODE.NOTFOUND.toString());
+				node.put("msg", "student not found");
+			}
+		}else	{
+			node.put("status", STATUSCODE.FORBIDDEN.toString());
 		}
-		
 		return ok(node);
-	}
-
-	public static Result getMark(String id) throws JsonGenerationException, JsonMappingException, IOException {
-		TestModel test = TestModel.finder.byId(new ObjectId(id));
-		String json = mapper.writeValueAsString(test);
-		return ok(json);
-
 	}
 
 	public static Result editMark(String id) throws JsonParseException, JsonMappingException, IOException {
