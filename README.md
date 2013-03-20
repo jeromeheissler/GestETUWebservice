@@ -17,26 +17,46 @@ Login is required if you want to edit some information on database. To be log yo
 	POST	/api/login
 	
 	example curl : 
-	curl --data "email=mymail@gmail.com&password=0000" http://localhost:9002/api/login
+	curl --data "email=mymail@gmail.com&password=0000" http://localhost:9000/api/login
 	
 	response body : 
-	{"status":"fail"} // if email and password do not lead to a connection
-	{"status":"success","token":"YEvi9tqWKetymrIKYnmT"} // if you are log
+	{"status":"400"} // if email and password do not lead to a connection
+	{"status":"200","token":"YEvi9tqWKetymrIKYnmT"} // if you are log
 
 #### work with student : 
+
+##### getting student
+You have 2 means to find student on database. Getting all student with the URI
+
+	GET		/api/student
+	
+Or one single student with : 
+	
+	GET		/api/student/:id
 
 ##### adding student
 
 	URI :
 	PUT 	/api/student
 
-bla bla
+For delete student you have to send a DELETE request with 
 
 	DELETE 	/api/student/:id
+	
+	example curl : 
+	curl -X "DELETE" http://localhost:9000/api/student/514435224e08afa658f83d52 --data "t=YEvi9tqWKetymrIKYnmT"
+	
+	response body
+	{"status":"200"}
+	
+If you miss send your token with the t parameter you will get a :
 
-balbla
+	{"status":"403"}
 
-	GET		/api/student/:id
+else if the student you want to delete does not exist you will get the status :
+
+	{"status":"404"}
+
 
 balbla
 
