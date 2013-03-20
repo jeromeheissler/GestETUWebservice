@@ -51,6 +51,7 @@ POST	/savePassword					controllers.Settings.savePassword()
 GET     /assets/*file               	controllers.Assets.at(path="/public", file)
 
 POST	/api/login						controllers.Api.login()
+POST	/api/logout						controllers.Api.logout()
 		
 PUT 	/api/student	  				controllers.Api.addStudent()
 DELETE 	/api/student/:id 				controllers.Api.delStudent(id: String)

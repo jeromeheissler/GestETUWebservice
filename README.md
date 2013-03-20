@@ -13,15 +13,23 @@ All rest service are describe below.
 #### log into the webservice : 
 Login is required if you want to edit some information on database. To be log you have to send a request POST to the url yoursite.com/api/login.
 
-	URI : 
+	- uri : 
 	POST	/api/login
-	
-	example curl : 
+	- example curl : 
 	curl --data "email=mymail@gmail.com&password=0000" http://localhost:9000/api/login
 	
-	response body : 
+	- response body : 
 	{"status":"400"} // if email and password do not lead to a connection
 	{"status":"200","token":"YEvi9tqWKetymrIKYnmT"} // if you are log
+
+#### log out the webservice : 
+	- uri : 
+	POST	/api/logout
+	- example curl : 
+	curl --data "t=YEvi9tqWKetymrIKYnmT" http://localhost:9000/api/logout
+	
+	- response body : 
+	{"status":"200"}
 	
 #### authenticate request
 For each request doing an action of insert, update, delete you need to send the token you get during the log in operation.
@@ -68,7 +76,7 @@ When you want to add a student you have to send PUT request with on parameter th
 	curl -X "PUT" http://localhost:9002/api/student --data "t=Bz5YWSuWKUmMaZvcYcEK&student={\"firstname\":\"Thibault Arnaud2\",\"lastname\":\"De maison rouge\",\"numStu\":\"21004737\",\"email\":null,\"promotion\":{\"id\":\"51443e134e08afa658f83d64\",\"annee\":2013,\"label\":\"CP\"},\"lstTest\":[]}" 
 	
 	- response body
-	{"status":"200"}
+	{"status":"200", "id":"514435224e08afa658f83d52"}
 	
 ##### delete student	
 For delete student you have to send a DELETE request with 
@@ -142,6 +150,9 @@ You can get information for one mark with the request :
 	PUT 	/api/mark/:idstudent
 	- example curl : 
 	curl -X "PUT" http://localhost:9002/api/mark/51443fea4e08afa658f83d69 --data "t=AfOuioBXCtRYslLbYfSj&mark={\"subject\":{\"id\":\"514435224e08afa658f83d53\",\"name\":\"mathematical\"},\"note\":14.0,\"date\":\"03/25/13\"}"
+	
+	- response body
+	{"status":"200", "id":"51443fea4e08afa658f83d6a"}
 
 #### delete mark
 	
@@ -152,4 +163,14 @@ You can get information for one mark with the request :
 	
 #### edit mark
 
+	-uri
 	POST	/api/mark/:id
+	- example curl : 
+	curl -X "POST" http://localhost:9002/api/mark/5149cdcd4e08a079dfda6237 --data "t=AfOuioBXCtRYslLbYfSj&mark={\"subject\":{\"id\":\"514435224e08afa658f83d53\",\"name\":\"mathematical\"},\"note\":10.0,\"date\":\"03/25/13\"}"
+	
+	
+	
+	
+	
+	
+	

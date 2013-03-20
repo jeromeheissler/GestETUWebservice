@@ -69,6 +69,17 @@ public class Api extends Controller {
 		return ok(node);
 	}
 	
+	public static Result logout()	{
+		DynamicForm signinForm = form().bindFromRequest();	
+		String token = signinForm.field("t").value();
+		ObjectNode node = new ObjectNode(factory);
+		if(ApiTokenModel.asToken(token))	{
+			ApiTokenModel.deleteToken(token);
+		}
+		node.put("status", STATUSCODE.SUCCESS.toString());
+		return ok(node);
+	}
+	
 	/**
 	 *  Work with student
 	 */
@@ -83,6 +94,7 @@ public class Api extends Controller {
 			StudentModel student = mapper.readValue(json, StudentModel.class);
 			student.insert();
 			node.put("status", STATUSCODE.SUCCESS.toString());
+			node.put("id", student.id());
 		}else	{
 			node.put("status", STATUSCODE.FORBIDDEN.toString());
 		}
@@ -125,9 +137,12 @@ public class Api extends Controller {
 			StudentModel student = StudentModel.finder.byId(new ObjectId(id));
 			
 			ObjectNode node = new ObjectNode(factory);
-			node.put("status", STATUSCODE.SUCCESS.toString());
-			node.put("content", mapper.convertValue(student, ObjectNode.class));
-			
+			if(student != null)	{
+				node.put("status", STATUSCODE.SUCCESS.toString());
+				node.put("content", mapper.convertValue(student, ObjectNode.class));
+			}else	{
+				node.put("status", STATUSCODE.NOTFOUND.toString());
+			}
 			return ok(node);
 		}
 	}
@@ -207,7 +222,15 @@ public class Api extends Controller {
 	
 	public static Result getMark(String id) throws JsonGenerationException, JsonMappingException, IOException {
 		TestModel test = TestModel.finder.byId(new ObjectId(id));
-		return ok(mapper.convertValue(test, ObjectNode.class));
+		
+		ObjectNode node = new ObjectNode(factory);
+		if(test != null)	{
+			node.put("status", STATUSCODE.SUCCESS.toString());
+			node.put("content", mapper.convertValue(test, ObjectNode.class));
+		}else	{
+			node.put("status", STATUSCODE.NOTFOUND.toString());
+		}
+		return ok(node);
 	}
 	
 	public static Result addMark(String studentid) throws JsonParseException, JsonMappingException, IOException {
@@ -226,6 +249,7 @@ public class Api extends Controller {
 			stu.addTest(test);
 			stu.update();
 			node.put("status", STATUSCODE.SUCCESS.toString());
+			node.put("id", test.id());
 		}else	{
 			node.put("status", STATUSCODE.FORBIDDEN.toString());
 		}
@@ -258,16 +282,31 @@ public class Api extends Controller {
 	}
 
 	public static Result editMark(String id) throws JsonParseException, JsonMappingException, IOException {
-		TestModel test = TestModel.finder.byId(new ObjectId(id));
-		TestModel newObject = mapper.readValue(request().body().asJson(), TestModel.class);
-		test.setNote(newObject.getNote());
-		if(newObject.getSubject().id() == null)
-			newObject.getSubject().insert();
-		test.setSubject(newObject.getSubject());
-		test.update();
-		
 		ObjectNode node = new ObjectNode(factory);
-		node.put("ok", 1);
+		
+		DynamicForm form = form().bindFromRequest();
+		String token = form.field("t").value();
+		String json = form.field("mark").value();
+		TestModel testedited = TestModel.finder.byId(new ObjectId(id));
+		if(ApiTokenModel.asToken(token) && testedited.getTeacher().id().compareTo(ApiTokenModel.getSessionId(token)) == 0)	{
+			if(testedited != null)	{
+				TestModel test = mapper.readValue(json, TestModel.class);
+				testedited.setDate(test.getDate());
+				testedited.setNote(test.getNote());
+				if(test.getSubject().id() == null)
+					test.getSubject().insert();
+				testedited.setSubject(test.getSubject());
+				testedited.update();
+				
+				node.put("status", STATUSCODE.SUCCESS.toString());
+			}else {
+				node.put("status", STATUSCODE.NOTFOUND.toString());
+			}
+		}else	{
+			node.put("status", STATUSCODE.FORBIDDEN.toString());
+		}
+		
+		
 		return ok(node);
 	}
 
