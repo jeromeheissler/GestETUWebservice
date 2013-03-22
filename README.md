@@ -20,7 +20,8 @@ Login is required if you want to edit some information on database. To be log yo
 	
 	- response body : 
 	{"status":"400"} // if email and password do not lead to a connection
-	{"status":"200","token":"YEvi9tqWKetymrIKYnmT"} // if you are log
+	{"status":"200","token":"YEvi9tqWKetymrIKYnmT", "type":"teacher"} // if you are log as a teacher
+	{"status":"200","token":"YEvi9tqWKetymrIKYnmT", "type":"student"} // if you are log as a student
 
 #### log out the webservice : 
 	- uri : 

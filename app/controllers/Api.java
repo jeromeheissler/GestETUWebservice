@@ -58,10 +58,12 @@ public class Api extends Controller {
 				else	{
 					node.put("status", STATUSCODE.SUCCESS.toString());
 					node.put("token", ApiTokenModel.generateNewToken(stu.id()));
+					node.put("type", "student");
 				}
 			}else	{
 				node.put("status", STATUSCODE.SUCCESS.toString());
 				node.put("token", ApiTokenModel.generateNewToken(teacher.id()));
+				node.put("type", "teacher");
 			}
 		} catch (NoSuchAlgorithmException e1) {
 			node.put("status", STATUSCODE.FAIL.toString());
