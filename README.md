@@ -1,5 +1,4 @@
 # This is a play app to manage mark in School.
-
 ## information
 We have 2 part : 
 
